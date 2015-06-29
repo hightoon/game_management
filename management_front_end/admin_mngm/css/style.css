@@ -1,0 +1,102 @@
+.managementpage h1 {
+  color: blue;
+  text-align: center;
+  align: center;
+}
+
+.block-list {
+  list-style-type:none;
+}
+
+.row {
+  width: 100%;
+  display: flex;
+}
+
+.row-70 {
+  width: 70%;
+  display: flex;
+}
+
+.row-30 {
+  width: 30%;
+  display: flex;
+}
+
+.row-10 {
+  width: 10%;
+  display: flex;
+}
+
+.row-90 {
+  width: 90%;
+  display: flex;
+}
+
+.col-1 {
+  width: 8.33%;
+}
+
+.col-2 {
+  width: 16.66%;
+  text-align: center;
+}
+
+.col-3 {
+  width: 25%;
+  text-align: center;
+}
+
+.col-4 {
+  width: 33.33%;
+}
+
+.col-5 {
+  width: 41.66%;
+}
+
+.col-6 {
+  width: 50%
+}
+
+.col-7 {
+  width: 58.33%;
+}
+
+.col-8 {
+  width: 66.66%;
+}
+
+.col-9 {
+  width: 75%;
+}
+
+.col-10 {
+  width: 83.33%;
+  text-align: center;
+}
+
+.col-11 {
+  width: 91.66%;
+}
+
+.col-12 {
+  width: 100%;
+}
+
+
+@media only screen and (max-width: 500px) {
+  p {
+    display: none;
+  }
+}
+
+* {
+  outline: 1px solid blue !important;
+}
+* {
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   -ms-box-sizing: border-box;
+   box-sizing: border-box;
+}

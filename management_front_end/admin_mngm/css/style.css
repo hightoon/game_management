@@ -1,11 +1,42 @@
 .managementpage h1 {
-  color: blue;
+  color: black;
   text-align: center;
   align: center;
+  text-transform: uppercase;
+  font-weight: 400;
+  font-size: 24px;
+  font-family: ff-clan-web-pro-wide;
+}
+
+.host-game-table {
+  width: 95%;
+  align: center;
+  padding: 20px;
+  spacing: 10px;
+}
+
+.adduser-section {
+  font-weight: 20px;
+}
+
+a {
+  color: white;
+}
+a:link{text-decoration:none;
+}
+
+ul.block-list {
+  list-style-type:none;
+  text-transform: uppercase;
 }
 
 .block-list {
-  list-style-type:none;
+  border-color: #3a3a48;
+}
+
+.block-list>li {
+  border-bottom-width: 1px;
+  padding: 8px;
 }
 
 .row {
@@ -39,7 +70,10 @@
 
 .col-2 {
   width: 16.66%;
-  text-align: center;
+  text-align: left;
+  border-right:1px solid blue;
+  background-color: #2B547E;
+  color: white;
 }
 
 .col-3 {
@@ -74,6 +108,9 @@
 .col-10 {
   width: 83.33%;
   text-align: center;
+  border-top:1px solid #F00;
+  padding: 32px !important;
+  background-color: #98AFC7;
 }
 
 .col-11 {
@@ -84,6 +121,17 @@
   width: 100%;
 }
 
+table {
+  margin: auto;
+  background-color: #F0F8FF;
+  border-style: solid solid solid solid;
+  border: 2px;
+  color: black;
+}
+
+th {
+  font-weight: strong;
+}
 
 @media only screen and (max-width: 500px) {
   p {
@@ -92,7 +140,7 @@
 }
 
 * {
-  outline: 1px solid blue !important;
+  /*outline: 1px solid blue !important;*/
 }
 * {
    -webkit-box-sizing: border-box;

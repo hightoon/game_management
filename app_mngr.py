@@ -5,7 +5,7 @@
 
   Author: haitong.chen@gmail.com
 """
-
+import urllib2
 from subprocess import Popen
 from bottle import route, request, redirect, template, run
 
@@ -76,14 +76,18 @@ def admin_page():
 @route("/start_game", method="POST")
 def start_app():
   global apps
-  #p = Popen("/Applications/PPS.app/Contents/MacOS/PPS影音")
-  #apps.append(p)
+  f = urllib2.urlopen('http://192.168.0.4:8080/start_game')
+  print f.read()
+  f.close()
   redirect('/%s/index'%(user))
 
-@route("/stop_game")
+@route("/stop_game", method="POST")
 def stop_app():
-  if apps != []:
-    for app in apps:
-      app.terminate()
+  global apps
+  f = urllib2.urlopen('http://192.168.0.4:8080/stop_game')
+  print f.read()
+  f.close()
+  redirect('/%s/index'%(user))
+
 
 run(host='localhost', port=8080, debug=True)

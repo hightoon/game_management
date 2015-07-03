@@ -8,6 +8,14 @@
   font-family: ff-clan-web-pro-wide;
 }
 
+.managementpage {
+  display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
+  display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+}
+
 .host-game-table {
   width: 95%;
   align: center;
@@ -120,7 +128,7 @@ th {
 }
 
 * {
-  /*outline: 1px solid blue !important;*
+  /*outline: 1px solid blue !important;*/
 }
 * {
    -webkit-box-sizing: border-box;

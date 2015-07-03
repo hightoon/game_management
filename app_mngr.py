@@ -54,7 +54,7 @@ def do_login():
       redirect('/static/management_front_end/admin_mngm/index.html')
   else:
     #return "<p>Login failed.</p>"
-    pass
+    redirect('/login') 
 
 def check_login(usr, pwd):
   if usr == 'admin' and pwd == 'admin':
@@ -93,4 +93,4 @@ def stop_app():
   redirect('/%s/index'%(user))
 
 
-run(host='localhost', port=8080, debug=True)
+run(host='0.0.0.0', port=80, debug=True)

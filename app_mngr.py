@@ -7,7 +7,7 @@
 """
 import urllib2
 from subprocess import Popen
-from bottle import route, request, redirect, template, run
+from bottle import route, request, redirect, template,static_file, run
 
 apps = []
 user = None
@@ -15,12 +15,15 @@ user = None
 @route('/')
 def main():
   redirect('/login')
+  #redirect('./management_front_end/login_page.html')
 
 @route('/login')
 def login():
-  if user:
-    redirect('/%s/index'%(user))
+  if user=='admin':
+    redirect('/static/index.html')
   else:
+    redirect('/static/management_front_end/login_page.html')
+  if 0:
     return '''
         <html>
         <head>
@@ -41,11 +44,14 @@ def login():
 @route('/login', method='POST')
 def do_login():
   global user
+  print "get login post"
   username = request.forms.get('username')
   password = request.forms.get('password')
+  print username, password
   if check_login(username, password):
     user = username
-    redirect('/%s/index'%(user))
+    if user == 'admin':
+      redirect('/static/management_front_end/admin_mngm/index.html')
   else:
     #return "<p>Login failed.</p>"
     pass
@@ -56,22 +62,19 @@ def check_login(usr, pwd):
   else:
     return False
 
-@route('/admin/index')
-def admin_page():
-  if user != 'admin':
-    redirect('/')
-  else:
-    return template('admin_main')
+@route('/logout')
+def user_logout():
+  global user
+  user = None
+  redirect('/login')
+
+@route('/static/<filename:path>')
+def send_static(filename):
+  return static_file(filename, root='./')
+  #if user != 'admin':
+  #  redirect('/')
   #else:
-  #  return """
-  #    <html>
-  #      <h1>网吧网络应用管理系统</h1>
-  #      <body>
-  #        <h3>Host-1</h3>
-  #        PPS影音     <a href="/start">启动</a>     <a href="/stop">停止</a>
-  #      </body>
-  #    </html>
-  #  """
+  #  return template('./management_front_end/admin_mngm/index')
 
 @route("/start_game", method="POST")
 def start_app():

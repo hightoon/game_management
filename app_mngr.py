@@ -20,7 +20,7 @@ def main():
 @route('/login')
 def login():
   if user=='admin':
-    redirect('/static/index.html')
+    redirect('/static/management_front_end/admin_mngm/index.html')
   else:
     redirect('/static/management_front_end/login_page.html')
   if 0:

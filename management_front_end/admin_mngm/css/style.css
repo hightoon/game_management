@@ -44,26 +44,6 @@ ul.block-list {
   display: flex;
 }
 
-.row-70 {
-  width: 70%;
-  display: flex;
-}
-
-.row-30 {
-  width: 30%;
-  display: flex;
-}
-
-.row-10 {
-  width: 10%;
-  display: flex;
-}
-
-.row-90 {
-  width: 90%;
-  display: flex;
-}
-
 .col-1 {
   width: 8.33%;
 }
@@ -140,7 +120,7 @@ th {
 }
 
 * {
-  /*outline: 1px solid blue !important;*/
+  /*outline: 1px solid blue !important;*
 }
 * {
    -webkit-box-sizing: border-box;

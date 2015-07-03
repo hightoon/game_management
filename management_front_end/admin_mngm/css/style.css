@@ -74,7 +74,6 @@ ul.block-list {
   border-right:1px solid blue;
   background-color: #2B547E;
   color: white;
-  display: flex;
 }
 
 .col-3 {
@@ -112,7 +111,6 @@ ul.block-list {
   border-top:1px solid #F00;
   padding: 32px !important;
   background-color: #98AFC7;
-  display: flex;
 }
 
 .col-11 {
@@ -143,18 +141,10 @@ th {
 
 * {
   /*outline: 1px solid blue !important;*/
-  display: flex;
 }
 * {
    -webkit-box-sizing: border-box;
    -moz-box-sizing: border-box;
    -ms-box-sizing: border-box;
    box-sizing: border-box;
-}
-
-* {
-  display: -webkit-flex; /* Chrome 21+, Safari 6.1+, iOS Safari 7+, Opera 15/16 */
-  display: -moz-flex; /* Firefox 18+ */
-  display: -ms-flexbox; /* IE 10 */
-  display: flex; /* Chrome 29+, Firefox 22+, IE 11+, Opera 12.1/17/18, Android 4.4+ */
 }

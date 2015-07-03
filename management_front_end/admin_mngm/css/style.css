@@ -74,6 +74,7 @@ ul.block-list {
   border-right:1px solid blue;
   background-color: #2B547E;
   color: white;
+  display: flex;
 }
 
 .col-3 {
@@ -111,6 +112,7 @@ ul.block-list {
   border-top:1px solid #F00;
   padding: 32px !important;
   background-color: #98AFC7;
+  display: flex;
 }
 
 .col-11 {
@@ -141,6 +143,7 @@ th {
 
 * {
   /*outline: 1px solid blue !important;*/
+  display: flex;
 }
 * {
    -webkit-box-sizing: border-box;

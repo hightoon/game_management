@@ -9,12 +9,13 @@
 }
 
 .managementpage {
-  display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
-  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
-  display: -ms-flexbox;      /* TWEENER - IE 10 */
-  display: -webkit-flex;     /* NEW - Chrome */
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
+  display: -webkit-flex; /* Safari */
+  -webkit-flex-wrap: wrap; /* Safari 6.1+ */
+  //display: -moz-box;
+  //-moz-box-wrap: wrap;
 }
 
 .host-game-table {
@@ -52,6 +53,9 @@ ul.block-list {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  display: -webkit-flex; /* Safari */
+  -webkit-flex-wrap: wrap; /* Safari 6.1+ */
+  //-moz-box-wrap: wrap;
 }
 
 .col-1 {

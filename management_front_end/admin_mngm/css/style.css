@@ -66,7 +66,7 @@ ul.block-list {
   width: 16.66%;
   text-align: left;
   border-right:1px solid blue;
-  background-color: #2B547E;
+  background-color: #00ffff;
   color: white;
 }
 
@@ -116,6 +116,56 @@ ul.block-list {
   text-align: center;
 }
 
+#welcome-bar {
+  text-align: center;
+  background-color: #2B547E;
+  color: white;
+  position: relative;
+  bottom: 1px;
+  font-size: medium;
+}
+
+#general-info-bar {
+  text-align: center;
+  background-color: #2B547E;
+  color: white;
+  position: relative;
+  bottom: 1px;
+  font-size: medium;
+}
+
+#logout-change-password {
+  text-align: center;
+  background-color: #2B547E;
+  color: white;
+  position: relative;
+  bottom: 1px;
+  font-size: medium;
+}
+
+#curr_user {
+  text-align: center;
+  background-color: #2B547E;
+  color: white;
+}
+
+#message-bar {
+  text-align: center;
+  background-color: #2B547E;
+  color: white;
+  font-size: medium;
+}
+
+#add-new-user {
+  font-size: medium;
+  text-align: left;
+}
+
+#delete-user {
+  font-size: medium;
+  text-align: left;
+}
+
 table {
   margin: auto;
   background-color: #F0F8FF;
@@ -126,6 +176,11 @@ table {
 
 th {
   font-weight: strong;
+}
+
+#logout-change-password button {
+  position: relative;
+  top: 15px;
 }
 
 @media only screen and (max-width: 500px) {

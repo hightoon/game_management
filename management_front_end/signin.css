@@ -4,10 +4,16 @@ body {
   background-color: #eee;
 }
 
+.signin-page-heading {
+  text-align: center;
+}
+
 .form-signin {
-  max-width: 330px;
+  max-width: 300px;
   padding: 15px;
   margin: 0 auto;
+  position: absolute;
+  right: 33%;
 }
 .form-signin .form-signin-heading,
 .form-signin .checkbox {
@@ -15,6 +21,8 @@ body {
 }
 .form-signin .checkbox {
   font-weight: normal;
+  position: absolute;
+  right: 38%;
 }
 .form-signin .form-control {
   position: relative;

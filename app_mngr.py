@@ -197,10 +197,15 @@ def add_user():
     sex = request.forms.get("sex")
     print usrname, passwd, email, nickname, sex
     usr_db = User.user_db
-    usr_db.cursor.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)',
-      (usrname, passwd, User.NOT_ADMIN, email, nickname, u"not admin"))
-    usr_db.commit()
-    redirect('/index/%s'%(act_user.usrname,))
+    try:
+      usr_db.cursor.execute('SELECT * FROM users WHERE name=?', (usrname,)).fetchone()
+    except:
+      usr_db.cursor.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)',
+        (usrname, passwd, User.NOT_ADMIN, email, nickname, u"not admin"))
+      usr_db.commit()
+      redirect('/index/%s'%(act_user.usrname,))
+    else: # user existing
+      return "用户名%s已存在，请重试！"%usrname
   else:
     redirect('/restricted')
 
@@ -213,6 +218,35 @@ def delete_user():
     usr_db.commit()
     print usrname, 'has been deleted from DB'
     redirect('/index/%s'%(act_user.usrname,))
+
+@route("/gamemng")
+def mng_game():
+  if act_user is not None:
+    return template('./management_front_end/view/game_mng.tpl',
+                    username=act_user.usrname, is_admin=act_user.is_admin)
+  else:
+    goto_login()
+
+@route("/pricingmng")
+def mng_pricing():
+  if act_user is not None:
+    return "敬请期待。。。"
+  else:
+    goto_login()
+
+@route("/statistics")
+def stat_mng():
+  if act_user is not None:
+    return "敬请期待。。。"
+  else:
+    goto_login()
+
+@route("/notification")
+def notif_mng():
+  if act_user is not None:
+    return "敬请期待。。。"
+  else:
+    goto_login()
 
 @route('/test_temp')
 def test_temp():
@@ -240,6 +274,10 @@ def stop_app(host, game):
 def restricted():
   abort(401, "对不起，您没有管理员权限！请联系管理员！")
 
+def goto_login():
+  redirect('/')
+
+
 def main():
   # add admin as default user
   admin = User('admin', '000000', email='admin@mhg.org', desc=u'管理员', is_admin=User.IS_ADMIN)
@@ -247,9 +285,14 @@ def main():
   usr_db.create_table('users',
     '(name text, passwd text, admin integer, email text, nickname text, desc text)')
   c = usr_db.cursor
-  c.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)',
-    (admin.usrname, admin.password, admin.is_admin, admin.email, admin.nickname, admin.desc))
-  usr_db.commit()
+  try:
+    c.execute('SELECT * FROM users WHERE name=?', (admin.usrname,)).fetchone()
+  except:
+    c.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)',
+      (admin.usrname, admin.password, admin.is_admin, admin.email, admin.nickname, admin.desc))
+    usr_db.commit()
+  else:
+    print "admin already existed"
 
   run(host='0.0.0.0', port=80, Debug=True, reloader=False)
   #run(host='localhost', port=80, Debug=True)

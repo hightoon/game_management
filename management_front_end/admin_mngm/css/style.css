@@ -104,7 +104,8 @@ ul.block-list {
   text-align: center;
   border-top:1px solid #F00;
   padding: 32px !important;
-  background-color: #98AFC7;
+  /*background-color: #98AFC7;*/
+  background-color: #eee;
 }
 
 .col-11 {
@@ -162,6 +163,16 @@ ul.block-list {
 }
 
 #delete-user {
+  font-size: medium;
+  text-align: left;
+}
+
+#host-game-control {
+  font-size: medium;
+  text-align: left;
+}
+
+#host-game-kb-ctrl {
   font-size: medium;
   text-align: left;
 }

@@ -12,7 +12,7 @@
 <body unresolved>
   <div id="main" class="managementpage">
     <div class="row">
-      <div id="welcome-bar" class="col-4"><p>您好，admin</p></div>
+      <div id="welcome-bar" class="col-4"><p>您好，{{username}}</p></div>
       <div id="logout-change-password" class="col-4">
         <button>注销</button>&nbsp<button>修改密码</button>
       </div>
@@ -33,60 +33,47 @@
           <li><h4><a href="/logout">退出登录</a></h4></li>
         </ul>
       </div>
-      <div id="user-mng" class="col-10">
-        <h5 id="add-new-user">添加用户</h5>
-        <form action="/add_user" method="POST">
-          <p><strong><abbr title="required">*</abbr></strong>为必填项。</p>
+      <div id="game-mng" class="col-10">
+        <h5 id="host-game-control">游戏控制</h5>
+        <div>
+          <form action="/game_control" method="POST">
+            <p>
+              <label for="host-selection">
+                <span>主机</span>
+                <select name="host-selection">
+                  <option value="host1">主机A</option>
+                  <option value="host2" selected>主机B</option>
+                  <option value="host3">主机C</option>
+                </select>
+              </label>
+              <label for="game-selection">
+                <span>游戏</span>
+                <select name="game-selection">
+                  <option value="game1">火焰飞车</option>
+                  <option value="game2" selected>火焰投篮</option>
+                  <option value="game3">火焰足球</option>
+                </select>
+              </label>
+            </p>
+          </form>
+        </div>
+        <div>
+          <span>控制: </span>
+          <button>开始</button>
+          <button>重置</button>
+        </div>
+        <h5 id="host-game-kb-ctrl">游戏控制</h5>
+        <div>
           <p>
-            <label for="username">
-              <span>用户名: </span>
-              <input type="text" id="uname" name="username" required />
-              <strong><abbr title="required">*</abbr></strong>
-            </label>
+            <tr>
+              <th>主机</th>
+              <th>游戏</th>
+              <th>状态</th>
+              <th>按键接口</th>
+              <th>备注</th>
+            </tr>
           </p>
-          <p>
-            <label for="password">
-              <span>密码: </span>
-              <input type="password" id="pass" name="password" required />
-              <strong><abbr title="required">*</abbr></strong>
-            </label>
-          </p>
-          <p>
-            <label for="email">
-              <span>邮箱: </span>
-              <input type="email" id="email" name="useremail" required />
-              <strong><abbr title="required">*</abbr></strong>
-            </label>
-          </p>
-          <p>
-            <label for="name">
-              <span>姓名: </span>
-              <input type="text" id="name" name="name" />
-              <strong><abbr title="required">*</abbr></strong>
-            </label>
-          </p>
-          <p>
-            <label for="sex">
-              <span>性别:</span>
-                <input type="radio" id="male" name="sex" value="male">
-                <label for="male">男</label>
-                <input type="radio" id="female" name="sex" value="female">
-                <label for="female">女</label>
-            </label>
-          </p>
-          <input type="submit" value="添加" />
-        </form>
-        <h5 id="delete-user">删除用户</h5>
-        <form action="delete_user" method="POST">
-          <p>
-            <label for="username">
-              <span>用户名: </span>
-              <input type="text" id="uname" name="username" required />
-              <strong><abbr title="required">*</abbr></strong>
-            </label>
-          </p>
-          <input type="submit" value="删除" />
-        </form>
+        </div>
       </div>
     </div>
   </div>

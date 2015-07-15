@@ -168,7 +168,7 @@ def logout_change_passwd():
   act_user = None
   redirect('/login')
 
-@route('/change_passwd')
+@route('/change_passwd', method='POST')
 def change_passwd():
   print 'change password'
   return "修改密码"

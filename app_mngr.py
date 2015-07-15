@@ -162,6 +162,17 @@ def user_logout():
   act_user = None
   redirect('/login')
 
+@route('/logout', method='POST')
+def logout_change_passwd():
+  global act_user
+  act_user = None
+  redirect('/login')
+
+@route('/change_passwd')
+def change_passwd():
+  print 'change password'
+  return "修改密码"
+
 @route('/index/<username>')
 def user_index(username):
   if act_user is not None and act_user.usrname == username:

@@ -14,7 +14,10 @@
     <div class="row">
       <div id="welcome-bar" class="col-4"><p>您好，admin</p></div>
       <div id="logout-change-password" class="col-4">
-        <button>注销</button>&nbsp<button>修改密码</button>
+        <form action="/logout_change_passwd" method="POST">
+          <button name="logout" formaction="/logout">注销</button>&nbsp
+          <button name="change_passwd" formaction="/change_passwd">修改密码</button>
+        </form>
       </div>
       <div id="general-info-bar" class="col-4"><p>您的店内，今日游戏运行xxx次。</p></div>
       <div id="message-bar" class="col-12"><p>总部新闻：xxxxxx</p></div>

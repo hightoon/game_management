@@ -241,7 +241,8 @@ def mng_game():
 @route("/pricingmng")
 def mng_pricing():
   if act_user is not None:
-    return "敬请期待。。。"
+    return template('./management_front_end/view/price_mng.tpl',
+                    username=act_user.usrname, is_admin=act_user.is_admin)
   else:
     goto_login()
 

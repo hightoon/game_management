@@ -65,9 +65,10 @@
           <button>开始</button>
           <button>重置</button>
         </div>
-        <h5 id="host-game-kb-ctrl">游戏控制</h5>
-        <div class="row">
-          <p>
+        <h5 id="host-game-kb-ctrl">游戏控制(键盘)</h5>
+        <div class="row" id="game-control-table">
+          <div class="col-9">
+          <table class="game-ctrl-tab">
             <tr>
               <th>主机</th>
               <th>游戏</th>
@@ -75,7 +76,15 @@
               <th>按键接口</th>
               <th>备注</th>
             </tr>
-          </p>
+            <tr>
+              <td>主机A</td>
+              <td>火焰飞车</td>
+              <td>运行中</td>
+              <td><button>空格</button>&nbsp<button>回车</button></td>
+              <td>小孩</td>
+            </tr>
+          </table>
+          </div>
         </div>
       </div>
     </div>

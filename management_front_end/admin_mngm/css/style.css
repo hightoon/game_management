@@ -18,11 +18,12 @@
   //-moz-box-wrap: wrap;
 }
 
-.host-game-table {
+.game-ctrl-tab  {
   width: 95%;
-  align: center;
+  align: left;
   padding: 20px;
   spacing: 10px;
+  border: 1px;
 }
 
 .adduser-section {
@@ -177,16 +178,27 @@ ul.block-list {
   text-align: left;
 }
 
+#game-control-table {
+
+}
+
+#price-form {
+  text-align: center;
+}
+
 table {
   margin: auto;
-  background-color: #F0F8FF;
+  /*background-color: #F0F8FF;*/
   border-style: solid solid solid solid;
   border: 2px;
+  border-color: black;
   color: black;
+  padding: 3px;
 }
 
 th {
-  font-weight: strong;
+  font-size: medium;
+  padding: 3px;
 }
 
 #logout-change-password button {

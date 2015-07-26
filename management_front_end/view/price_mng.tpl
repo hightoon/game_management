@@ -19,7 +19,7 @@
           <button name="change_passwd" formaction="/change_passwd">修改密码</button>
         </form>
       </div>
-      <div id="general-info-bar" class="col-4"><p>您的店内，今日游戏运行xxx次。</p></div>
+      <div id="general-info-bar" class="col-4"><p>您的店内，今日游戏运行{{tot_game_ops}}次。</p></div>
       <div id="message-bar" class="col-12"><p>总部新闻：xxxxxx</p></div>
     </div>
     <div class="row">
@@ -35,9 +35,9 @@
           <li><h4><a href="/logout">退出登录</a></h4></li>
         </ul>
       </div>
-      <div id="price-form" class="col-5">
+      <div id="price-form" class="col-4">
         <h4>价格修改</h4>
-        <form action="" method="post">
+        <form action="/change_price" method="post">
           <p>
             <label for="shop-name">店名 </label>
             <input id="shop-name" type="text" name="shopname">
@@ -58,15 +58,37 @@
               <option value="gamec">游戏C</option>
             </select>
           </p>
+          <p>
+            <label for="timing">时间 </label>
+            <input id="timing" type="text" name="gametiming" placeholder="时间区间">
+          </p>
+          <p>
+            <label for="price-range">价格 </label>
+            <input id="price-range" type="text" name="price" placeholder="最低20">
+          </p>
           <input type="submit" value="修改">
         </form>
       </div>
-      <div id="price-table" class="col-5">
-        <p>this is a price table</p>
+      <div id="price-list-page" class="col-5">
+        <h4>价格列表</h4>
+        <table class="price-list">
+          <tr>
+            <th>主机</th>
+            <th>游戏</th>
+            <th>价格</th>
+            <th>时间区间</th>
+          </tr>
+          <tr>
+            <td>hostA</td>
+            <td>gameA</td>
+            <td>100yuan/hour </td>
+            <td>10:00-11:00</td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>
-  <script src="../js/resumeBuilder.js"></script>
+  <script src="/static/management_front_end/js/eventhandler.js"></script>
   <script type="text/javascript">
   </script>
 </body>

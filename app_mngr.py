@@ -13,12 +13,14 @@ from bottle import route, request, redirect, template,static_file, run
 # globals for debug purpose
 apps = []
 act_user = None
+daily_running_stat = {}
 
 # database manipulation
 class GMDatabase:
   def __init__(self, dbfile='default.db'):
     self.dbfile = dbfile
     self.conn = sqlite3.connect(dbfile)
+    self.conn.text_factory = str
 
   def create_table(self, tabname, fmt):
     c = self.conn.cursor()
@@ -45,7 +47,6 @@ class User:
   usr_db_file = 'test_user_0.db'
   user_db = GMDatabase(usr_db_file)
   op_db = GMDatabase(op_db_file)
-  user_db.text_factory = str
   def __init__(self, usrname, password, is_admin=NOT_ADMIN,
               nickname='guest', email='', desc='',):
     self._usrname = usrname
@@ -132,6 +133,7 @@ def do_login():
   print isvalid, isadmin
   if isvalid:
     act_user = User(username, password, isadmin)
+    daily_running_stat[act_user.usrname] = 0
     if isadmin == User.IS_ADMIN:
       redirect('/index/admin')
     else:
@@ -168,10 +170,34 @@ def logout_change_passwd():
   act_user = None
   redirect('/login')
 
-@route('/change_passwd', method='POST')
+@route('/change_passwd', method="POST")
 def change_passwd():
-  print 'change password'
-  return "修改密码"
+  redirect('/change_password')
+
+@route('/change_password')
+def change_password():
+  if act_user is not None:
+    return template('./management_front_end/change_password.tpl')
+  else:
+    redirect('/')
+
+@route('/change_password', method="POST")
+def change_password():
+  if act_user is not None:
+    username = request.forms.get('username')
+    new_password = request.forms.get('password_new')
+    confirm_password = request.forms.get('password_confirm')
+    if new_password != confirm_password:
+      return "两次密码输入不一致，请返回重新输入！"
+    else:
+      cur = User.user_db.cursor
+      cur.execute('UPDATE users SET passwd=? WHERE name=?',
+                  (new_password, act_user.usrname,))
+      User.user_db.commit()
+      cur.close()
+      redirect('/')
+  else:
+    redirect('/')
 
 @route('/index/<username>')
 def user_index(username):
@@ -179,7 +205,8 @@ def user_index(username):
     now = datetime.now()
     return template('./management_front_end/admin_mngm/index',
                     is_admin=act_user.is_admin, username=act_user.usrname,
-                    nowtime="%d:%d:%d"%(now.hour, now.minute, now.second))
+                    nowtime="%d:%d:%d"%(now.hour, now.minute, now.second),
+                    tot_game_ops=100, num_of_ops=daily_running_stat[act_user.usrname])
   else:
     redirect('/')
 
@@ -194,7 +221,8 @@ def mng_user():
   else:
     if act_user.is_admin:
       return template('./management_front_end/view/user_mng.tpl',
-                      is_admin=(act_user.is_admin))
+                      is_admin=act_user.is_admin,
+                      tot_game_ops=100, num_of_ops=daily_running_stat[act_user.usrname])
     else:
       redirect('/restricted')
 
@@ -209,14 +237,18 @@ def add_user():
     print usrname, passwd, email, nickname, sex
     usr_db = User.user_db
     try:
-      usr_db.cursor.execute('SELECT * FROM users WHERE name=?', (usrname,)).fetchone()
-    except:
-      usr_db.cursor.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)',
-        (usrname, passwd, User.NOT_ADMIN, email, nickname, u"not admin"))
-      usr_db.commit()
-      redirect('/index/%s'%(act_user.usrname,))
+      existing_user = \
+        usr_db.cursor.execute('SELECT * FROM users WHERE name=?', (usrname,)).fetchone()
+    except Exception as e:
+      return e
     else: # user existing
-      return "用户名%s已存在，请重试！"%usrname
+      if existing_user is None:
+        usr_db.cursor.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)',
+          (usrname, passwd, User.NOT_ADMIN, email, nickname, u"not admin"))
+        usr_db.commit()
+        redirect('/index/%s'%(act_user.usrname,))
+      else:
+        return "用户名%s已存在，请重试！"%usrname
   else:
     redirect('/restricted')
 
@@ -234,17 +266,43 @@ def delete_user():
 def mng_game():
   if act_user is not None:
     return template('./management_front_end/view/game_mng.tpl',
-                    username=act_user.usrname, is_admin=act_user.is_admin)
+                    username=act_user.usrname, is_admin=act_user.is_admin,
+                    tot_game_ops=100, num_of_ops=daily_running_stat[act_user.usrname])
   else:
     goto_login()
+
+@route("/game_control", method="POST")
+def control_game():
+  if act_user is not None:
+    host = request.forms.get("host")
+    game = request.forms.get("game")
+    op = request.forms.get("op")
+    if op == 'start':
+      #inc_num_of_ops(act_user.usrname)
+      if act_user.usrname in daily_running_stat.keys():
+        daily_running_stat[act_user.usrname] = \
+          daily_running_stat[act_user.usrname] + 1
+      else:
+        daily_running_stat[act_user.usrname] = 0
+    redirect('/index/%s'%(act_user.usrname,))
 
 @route("/pricingmng")
 def mng_pricing():
   if act_user is not None:
     return template('./management_front_end/view/price_mng.tpl',
-                    username=act_user.usrname, is_admin=act_user.is_admin)
+                    username=act_user.usrname, is_admin=act_user.is_admin,
+                    tot_game_ops=100, num_of_ops=daily_running_stat[act_user.usrname])
   else:
     goto_login()
+
+@route("/change_price", method="POST")
+def change_price():
+  shop_name = request.forms.get('shopname')
+  host_name = request.forms.get('hostname')
+  game_name = request.forms.get('gamename')
+  timing    = request.forms.get('gametiming')
+  price     = request.forms.get('price')
+  todo
 
 @route("/statistics")
 def stat_mng():
@@ -256,7 +314,18 @@ def stat_mng():
 @route("/notification")
 def notif_mng():
   if act_user is not None:
-    return "敬请期待。。。"
+    news="""
+    青年朋友们：
+
+　　值此中华全国青年联合会第十二届委员会全体会议和中华全国学生联合会第二十六次代表大会开幕之际，我代表党中央，向大会的召开表示热烈的祝贺！向全国各族各界青年和青年学生、向广大海外中华青年，表示诚挚的问候！
+
+　　紧跟时代砥砺前行，担当责任奋发有为，是我国青年的光荣传统，也是党和人民对广大青年的殷切期望。5年来，在党的坚强领导和共青团帮助指导下，各级青联和学联组织围绕中心、服务大局，积极组织青年、宣传青年、教育青年、引导青年，各项工作取得可喜成绩。广大青年和青年学生响应党的号召，胸怀祖国和人民，奉献社会和他人，积极投身坚持和发展中国特色社会主义伟大实践，以实际行动证明，当代中国青年不愧为大有希望、大有作为的一代。
+
+　　“士不可以不弘毅，任重而道远。”国家的前途，民族的命运，人民的幸福，是当代中国青年必须和必将承担的重任。一代青年有一代青年的历史际遇。我们的国家正在走向繁荣富强，我们的民族正在走向伟大复兴，我们的人民正在走向更加幸福美好的生活。当代中国青年要有所作为，就必须投身人民的伟大奋斗。同人民一起奋斗，青春才能亮丽；同人民一起前进，青春才能昂扬；同人民一起梦想，青春才能无悔。
+    """
+    return template('./management_front_end/view/notif_mng.tpl',
+                    username=act_user.usrname, is_admin=act_user.is_admin,
+                    latest_news=news, tot_game_ops=100, num_of_ops=daily_running_stat[act_user.usrname])
   else:
     goto_login()
 
@@ -289,6 +358,12 @@ def restricted():
 def goto_login():
   redirect('/')
 
+def inc_num_of_ops(usrname):
+  cur = User.op_db.cursor
+  op_num = cur.execute('SELECT * FROM game_op WHERE usrname=?', (usrname,)).fetchone()[1]
+  print op_num
+  cur.execute('UPDATE game_op SET num_of_ops = ? WHERE usrname=?', (op_num+1, usrname))
+  cur.close()
 
 def main():
   # add admin as default user
@@ -296,6 +371,8 @@ def main():
   usr_db = User.user_db
   usr_db.create_table('users',
     '(name text, passwd text, admin integer, email text, nickname text, desc text)')
+  #User.op_db.create_table('game_op',
+  #  '(usrname text primary key, integer num_of_ops)')
   c = usr_db.cursor
   try:
     c.execute('SELECT * FROM users WHERE name=?', (admin.usrname,)).fetchone()

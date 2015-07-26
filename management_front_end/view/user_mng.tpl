@@ -19,7 +19,7 @@
           <button name="change_passwd" formaction="/change_passwd">修改密码</button>
         </form>
       </div>
-      <div id="general-info-bar" class="col-4"><p>您的店内，今日游戏运行xxx次。</p></div>
+      <div id="general-info-bar" class="col-4"><p>您的店内，今日游戏运行{{tot_game_ops}}次。</p></div>
       <div id="message-bar" class="col-12"><p>总部新闻：xxxxxx</p></div>
     </div>
     <!--div id="message-bar" class="row"><h6>系统消息：xxxxxx</h6></div-->
@@ -37,7 +37,7 @@
         </ul>
       </div>
       <div id="user-mng" class="col-10">
-        <h5 id="add-new-user">添加用户</h5>
+        <h4 id="add-new-user">添加用户</h4>
         <form action="/add_user" method="POST">
           <p><strong><abbr title="required">*</abbr></strong>为必填项。</p>
           <p>
@@ -79,7 +79,7 @@
           </p>
           <input type="submit" value="添加" />
         </form>
-        <h5 id="delete-user">删除用户</h5>
+        <h4 id="delete-user">删除用户</h4>
         <form action="delete_user" method="POST">
           <p>
             <label for="username">
@@ -93,7 +93,7 @@
       </div>
     </div>
   </div>
-  <script src="../js/resumeBuilder.js"></script>
+  <script src="/static/management_front_end/js/eventhandler.js"></script>
   <script type="text/javascript">
   </script>
 </body>

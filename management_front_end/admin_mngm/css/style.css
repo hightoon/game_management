@@ -17,7 +17,7 @@
   //display: -moz-box;
   //-moz-box-wrap: wrap;
 }
-
+/*
 .game-ctrl-tab  {
   width: 95%;
   align: left;
@@ -25,6 +25,16 @@
   spacing: 10px;
   border: 1px;
 }
+
+.price-list {
+  width: 95%;
+  text-align: left;
+  margin: 5px 50px;
+  width: 95%;
+  spacing: 10px;
+  border: 1px;
+  padding: 10px 10px 10px 10px;
+}*/
 
 .adduser-section {
   font-weight: 20px;
@@ -50,13 +60,33 @@ ul.block-list {
   padding: 8px;
 }
 
+.notif-header {
+  align: center;
+  text-align: center;
+}
+
+.notif-text-body {
+  text-align: left;
+}
+
+.cmnpy-home {
+  text-align: center;
+  font-style: italic;
+}
+
+span.company-home {
+  color: blue;
+  font-size: large;
+  font-weight: bold;
+}
+
 .row {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   display: -webkit-flex; /* Safari */
   -webkit-flex-wrap: wrap; /* Safari 6.1+ */
-  //-moz-box-wrap: wrap;
+  /*-moz-box-wrap: wrap;*/
 }
 
 .col-1 {
@@ -102,11 +132,9 @@ ul.block-list {
 
 .col-10 {
   width: 83.33%;
-  text-align: center;
+  /*text-align: center;*/
   border-top:1px solid #F00;
   padding: 32px !important;
-  /*background-color: #98AFC7;*/
-  background-color: #eee;
 }
 
 .col-11 {
@@ -157,15 +185,24 @@ ul.block-list {
   color: white;
   font-size: medium;
 }
-
+/*
 #add-new-user {
   font-size: medium;
-  text-align: left;
+  align: left;
+  margin: 5px 20px;
 }
 
 #delete-user {
   font-size: medium;
-  text-align: left;
+  align: left;
+  margin: 5px 20px;
+}
+*/
+
+#user-mgr {
+  font-size: medium;
+  align: left;
+  margin: 5px 20px;
 }
 
 #host-game-control {
@@ -178,27 +215,36 @@ ul.block-list {
   text-align: left;
 }
 
-#game-control-table {
-
-}
-
 #price-form {
-  text-align: center;
+  text-align: left;
+  margin: 5px 50px; /* top left */
+  border-right:1px solid black;
 }
 
+/*
 table {
   margin: auto;
-  /*background-color: #F0F8FF;*/
   border-style: solid solid solid solid;
   border: 2px;
   border-color: black;
   color: black;
   padding: 3px;
 }
+*/
+table {
+  padding: 10px;
+  border-collapse: collapse;
+  font-size: small;
+}
 
 th {
-  font-size: medium;
-  padding: 3px;
+  border: 2px solid;
+  padding: 8px;
+}
+
+td {
+  border: 2px solid;
+  padding: 8px;
 }
 
 #logout-change-password button {

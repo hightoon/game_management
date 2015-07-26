@@ -22,9 +22,9 @@
       <div id="general-info-bar" class="col-4">
         <p>
           %if is_admin:
-            您的店内，今日游戏运行xxx次。
+            您的店内，今日游戏运行{{tot_game_ops}}次。
           %else:
-            您今日运行游戏xxx次！
+            您今日运行游戏{{num_of_ops}}次！
           %end
         </p>
       </div>
@@ -38,8 +38,10 @@
             <li><h4><a href="/usermng">用户管理</a></h4></li>
           %end
           <li><h4><a href="/gamemng">游戏管理</a></h4></li>
+          %if is_admin:
           <li><h4><a href="/pricingmng">价格管理</a></h4></li>
           <li><h4><a href="/statistics">数据统计</a></h4></li>
+          %end
           <li><h4><a href="/notification">消息通知</a></h4></li>
           <li><h4><a href="/logout">退出登录</a></h4></li>
         </ul>
@@ -47,6 +49,8 @@
       <div id="game-table" class="col-10">
         %if is_admin:
           <th>截至止{{nowtime}}, 今日：</th>
+        %else:
+          <th>截至止{{nowtime}}, 今日您已经运行游戏{{num_of_ops}}次。
         %end
         <!--table id="game-hosts-table" class="host-game-table">
           <tr>
@@ -59,8 +63,6 @@
       </div>
     </div>
   </div>
-  <script src="../js/resumeBuilder.js"></script>
-  <script type="text/javascript">
-  </script>
+  <script src="/static/management_front_end/js/eventhandler.js"></script>
 </body>
 </html>

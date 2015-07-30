@@ -12,7 +12,9 @@
 <body unresolved>
   <div id="main" class="managementpage">
     <div class="row">
-      <div id="welcome-bar" class="col-4"><p>您好，{{username}}</p></div>
+      <div id="welcome-bar" class="col-4"><p>
+        您好，<a href="/index/{{username}}">{{username}}</a>
+      </p></div>
       <div id="logout-change-password" class="col-4">
         <form action="/logout_change_passwd" method="POST">
           <button name="logout" formaction="/logout">注销</button>&nbsp
@@ -46,20 +48,19 @@
           <li><h4><a href="/logout">退出登录</a></h4></li>
         </ul>
       </div>
-      <div id="game-table" class="col-10">
-        %if is_admin:
-          <th>截至止{{nowtime}}, 今日：</th>
-        %else:
-          <th>截至止{{nowtime}}, 今日您已经运行游戏{{num_of_ops}}次。
-        %end
-        <!--table id="game-hosts-table" class="host-game-table">
-          <tr>
-            <th>从机名</th>
-            <th>从机地址</th>
-            <th>游戏</th>
-            <th>状态</th>
-          </tr>
-        </table-->
+      <div class="col-10">
+        <p>
+          截至止{{nowtime}}, 今日：<br/>
+          %if is_admin:
+            <ul>
+              %for ui in usrinfo:
+                <li>{{ui[0]}}运行游戏{{ui[1]}}次，登录时间{{ui[2]}}！</li>
+              %end
+            </ul>
+          %else:
+            <ul><li>您已经运行游戏{{num_of_ops}}次。</li></ul>
+          %end
+        </p>
       </div>
     </div>
   </div>

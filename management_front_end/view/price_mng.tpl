@@ -12,7 +12,9 @@
 <body unresolved>
   <div id="main" class="managementpage">
     <div class="row">
-      <div id="welcome-bar" class="col-4"><p>您好，admin</p></div>
+      <div id="welcome-bar" class="col-4"><p>
+        您好，<a href="/index/{{username}}">{{username}}</a>
+      </p></div>
       <div id="logout-change-password" class="col-4">
         <form action="/logout_change_passwd" method="POST">
           <button name="logout" formaction="/logout">注销</button>&nbsp

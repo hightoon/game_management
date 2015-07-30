@@ -14,6 +14,8 @@ from bottle import route, request, redirect, template,static_file, run
 apps = []
 act_user = None
 daily_running_stat = {}
+tot_game_runnings = 0
+login_timestamps = {}
 
 # database manipulation
 class GMDatabase:
@@ -133,11 +135,14 @@ def do_login():
   print isvalid, isadmin
   if isvalid:
     act_user = User(username, password, isadmin)
-    daily_running_stat[act_user.usrname] = 0
-    if isadmin == User.IS_ADMIN:
-      redirect('/index/admin')
-    else:
-      redirect('/index/%s'%username)
+    if username not in daily_running_stat.keys():
+      daily_running_stat[username] = 0
+    now = datetime.now()
+    login_timestamps[username] = "%02d:%02d:%02d"%(now.hour, now.minute, now.second)
+    #if isadmin == User.IS_ADMIN:
+    #  redirect('/index/admin')
+    #else:
+    redirect('/index/%s'%username)
   else:
     redirect('/')
 
@@ -203,10 +208,15 @@ def change_password():
 def user_index(username):
   if act_user is not None and act_user.usrname == username:
     now = datetime.now()
+    usrinfo = []
+    for usr in daily_running_stat.keys():
+      usrinfo.append((usr, daily_running_stat[usr], login_timestamps[usr]))
     return template('./management_front_end/admin_mngm/index',
                     is_admin=act_user.is_admin, username=act_user.usrname,
-                    nowtime="%d:%d:%d"%(now.hour, now.minute, now.second),
-                    tot_game_ops=100, num_of_ops=daily_running_stat[act_user.usrname])
+                    nowtime="%02d:%02d:%02d"%(now.hour, now.minute, now.second),
+                    tot_game_ops=tot_game_runnings,
+                    num_of_ops=daily_running_stat[act_user.usrname],
+                    usrinfo=usrinfo)
   else:
     redirect('/')
 
@@ -222,7 +232,9 @@ def mng_user():
     if act_user.is_admin:
       return template('./management_front_end/view/user_mng.tpl',
                       is_admin=act_user.is_admin,
-                      tot_game_ops=100, num_of_ops=daily_running_stat[act_user.usrname])
+                      tot_game_ops=tot_game_runnings,
+                      num_of_ops=daily_running_stat[act_user.usrname],
+                      username=act_user.usrname)
     else:
       redirect('/restricted')
 
@@ -267,7 +279,8 @@ def mng_game():
   if act_user is not None:
     return template('./management_front_end/view/game_mng.tpl',
                     username=act_user.usrname, is_admin=act_user.is_admin,
-                    tot_game_ops=100, num_of_ops=daily_running_stat[act_user.usrname])
+                    tot_game_ops=tot_game_runnings,
+                    num_of_ops=daily_running_stat[act_user.usrname])
   else:
     goto_login()
 
@@ -283,7 +296,10 @@ def control_game():
         daily_running_stat[act_user.usrname] = \
           daily_running_stat[act_user.usrname] + 1
       else:
-        daily_running_stat[act_user.usrname] = 0
+        daily_running_stat[act_user.usrname] = 1
+    #calc tot runnings
+    global tot_game_runnings
+    tot_game_runnings = sum(daily_running_stat.values())
     redirect('/index/%s'%(act_user.usrname,))
 
 @route("/pricingmng")
@@ -291,7 +307,8 @@ def mng_pricing():
   if act_user is not None:
     return template('./management_front_end/view/price_mng.tpl',
                     username=act_user.usrname, is_admin=act_user.is_admin,
-                    tot_game_ops=100, num_of_ops=daily_running_stat[act_user.usrname])
+                    tot_game_ops=tot_game_runnings,
+                    num_of_ops=daily_running_stat[act_user.usrname])
   else:
     goto_login()
 
@@ -325,7 +342,8 @@ def notif_mng():
     """
     return template('./management_front_end/view/notif_mng.tpl',
                     username=act_user.usrname, is_admin=act_user.is_admin,
-                    latest_news=news, tot_game_ops=100, num_of_ops=daily_running_stat[act_user.usrname])
+                    latest_news=news, tot_game_ops=tot_game_runnings,
+                    num_of_ops=daily_running_stat[act_user.usrname])
   else:
     goto_login()
 

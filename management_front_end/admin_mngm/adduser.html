@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>用户管理</title>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+  <div class="managementpage">
+    <div class="row">
+      <div class="col-2">
+        <ul class="block-list">
+          <li><h4><a href="/user_mng.html">用户管理</a></h4></li>
+          <li><h4><a href="index.html">游戏管理</a></h4></li>
+          <li><h4><a>时间费用</a></h4></li>
+          <li><h4>生成报告</h4></li>
+          <li><h4><a href="/logout">退出登录</a></h4></li>
+        </ul>
+      </div>
+      <div class="col-10">
+        <h4 class="adduser-section">添加用户</h4>
+        <form method="post">
+          <p>用户名: <input type="text" name="newuser" />
+          密 码: <input type="text" name="password" />
+          <input type="submit" value="添加" /></p>
+        </form>
+        <h4 class="adduser-section">删除用户</h4>
+          <form method="post">
+            <p>用户名: <input type="text" name="user" />
+            <input type="submit" value="删除" /></p>
+          </form>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

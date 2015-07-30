@@ -2,9 +2,10 @@
 #-* encoding: utf-8 *-
 
 import time
+import win32api, win32con
 from subprocess import Popen
 from bottle import route, request, get, post, run
-
+from SendKeys import SendKeys
 running_game = None
 
 class Game(object):
@@ -45,16 +46,25 @@ def stop_game():
         running_game = None
     return 'ok'
 
+def mouse_click(x, y):
+    pass
+
 def run_svr():
     run(host='192.168.0.4', port=8080, debug=True)
 
 def main():
-    game = Game("D:\\GameManagememt\\[vrword.cn]超级篮球\\Baskhead v0.1\\Baskhead", "BaskHead")
+    scrn_w = win32api.GetSystemMetrics(0)
+    scrn_h = win32api.GetSystemMetrics(1)
+    game = Game("D:\GameManagememt\玩家体验测试时间隧道2\Doctor_Who_Time_Tunnel-pc\Tardis", "Tardis")
     game.start()
-    time.sleep(10);
-    print game.get_status()
-    time.sleep(10)
-    game.stop()
+    time.sleep(1)
+    #SendKeys("{ENTER}")
+    #time.sleep(10)
+    #game.stop()
+    win32api.SetCursorPos([scrn_w/2, scrn_h/2])
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,0,0,0,0)
+    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0,0,0)
 
 if __name__ == '__main__':
-    run_svr()
+    #run_svr()
+    main()

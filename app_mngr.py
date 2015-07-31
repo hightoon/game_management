@@ -104,6 +104,25 @@ class User:
   def is_admin(self, yesorno):
     self._is_admin = yesorno
 
+def parse_line(s):
+  return s.split()
+
+def get_hosts():
+  hosts = []
+  fd = open('hosts.txt')
+  for ln in fd:
+    hosts.append(parse_line(ln))
+  fd.close()
+  return hosts
+
+def get_games():
+  games = []
+  fd = open('games.txt')
+  for ln in fd:
+    games.append(parse_line(ln))
+  fd.close()
+  return games
+
 @route('/')
 def main():
   redirect('/login')
@@ -277,19 +296,24 @@ def delete_user():
 @route("/gamemng")
 def mng_game():
   if act_user is not None:
+    hosts = get_hosts()
+    games = get_games()
     return template('./management_front_end/view/game_mng.tpl',
                     username=act_user.usrname, is_admin=act_user.is_admin,
                     tot_game_ops=tot_game_runnings,
-                    num_of_ops=daily_running_stat[act_user.usrname])
+                    num_of_ops=daily_running_stat[act_user.usrname],
+                    hosts=hosts, games=games)
   else:
     goto_login()
 
 @route("/game_control", method="POST")
 def control_game():
+  print 'start game remote control'
   if act_user is not None:
     host = request.forms.get("host")
     game = request.forms.get("game")
     op = request.forms.get("op")
+    print host, game, op
     if op == 'start':
       #inc_num_of_ops(act_user.usrname)
       if act_user.usrname in daily_running_stat.keys():
@@ -297,6 +321,14 @@ def control_game():
           daily_running_stat[act_user.usrname] + 1
       else:
         daily_running_stat[act_user.usrname] = 1
+      f = urllib2.urlopen('http://%s:8080/mc_start_game'%(host,))
+      print f.read()
+      f.close()
+    elif op == 'stop':
+      f = urllib2.urlopen('http://%s:8080/mc_stop_game'%(host,))
+      print f.read()
+      f.close()
+
     #calc tot runnings
     global tot_game_runnings
     tot_game_runnings = sum(daily_running_stat.values())

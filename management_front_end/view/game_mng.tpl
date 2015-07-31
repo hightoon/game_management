@@ -56,17 +56,25 @@
               <label for="host">
                 <span>主机</span>
                 <select name="host">
-                  <option value="host1">主机A</option>
-                  <option value="host2" selected>主机B</option>
-                  <option value="host3">主机C</option>
+                  %for host in hosts:
+                    <option value="{{host[1]}}" selected>{{host[0]}}</option>
+                  %end
+                  <option value="default" selected>请选择</option>
+                    <!--option value="host1">主机A</option>
+                    <option value="host2" selected>主机B</option>
+                    <option value="host3">主机C</option-->
                 </select>
               </label>
               <label for="game">
                 <span>游戏</span>
                 <select name="game">
-                  <option value="game1">火焰飞车</option>
+                  %for game in games:
+                  <option value="{{game[1]}}" selected>{{game[0]}}</option>
+                  %end
+                  <option value="default" selected>请选择</option>
+                  <!--option value="game1">火焰飞车</option>
                   <option value="game2" selected>火焰投篮</option>
-                  <option value="game3">火焰足球</option>
+                  <option value="game3">火焰足球</option-->
                 </select>
               </label>
             </p>
@@ -76,6 +84,7 @@
           <span>控制 </span>
           <button type="submit" form="start-game-form" name="op" value="start">开始</button>
           <button type="submit" form="start-game-form" name="op" value="reset">重置</button>
+          <button type="submit" form="start-game-form" name="op" value="stop">停止</button>
         </div>
         <h5 id="host-game-kb-ctrl">游戏控制(键盘)</h5>
         <div class="row" id="game-control-table">

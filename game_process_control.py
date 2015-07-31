@@ -7,6 +7,7 @@ from subprocess import Popen
 from bottle import route, request, get, post, run
 from SendKeys import SendKeys
 running_game = None
+is_on_game_page = False
 
 class Game(object):
     def __init__(self, path, name):
@@ -46,25 +47,71 @@ def stop_game():
         running_game = None
     return 'ok'
 
+@route('/mc_start_game')
+def mc_start_game():
+  time.sleep(5)
+  if not is_on_game_page:
+    enter_game_page()
+    time.sleep(1)
+    mc_click_start_button()
+
+@route('/mc_stop_game')
+def mc_stop_game():
+  time.sleep(5)
+  mc_stop_game()
+
 def mouse_click(x, y):
     pass
 
 def run_svr():
-    run(host='192.168.0.4', port=8080, debug=True)
+    run(host='0.0.0.0', port=8080, debug=True)
+
+def mc_click_start_button():
+  scrn_w = win32api.GetSystemMetrics(0)
+  scrn_h = win32api.GetSystemMetrics(1)
+  win32api.SetCursorPos([scrn_w*2/5, scrn_h/2])
+  win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,0,0,0,0)
+  win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0,0,0)
+
+def mc_click_stop_button():
+  scrn_w = win32api.GetSystemMetrics(0)
+  scrn_h = win32api.GetSystemMetrics(1)
+  win32api.SetCursorPos([scrn_w*13/14, scrn_h/2])
+  win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,0,0,0,0)
+  win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0,0,0)
+
+def enter_game_page():
+  scrn_w = win32api.GetSystemMetrics(0)
+  scrn_h = win32api.GetSystemMetrics(1)
+  win32api.SetCursorPos([scrn_w*2/3, scrn_h/2])
+  win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,0,0,0,0)
+  win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0,0,0)
+  is_on_game_page = True
+
+def mc_stop_game():
+  SendKeys("{ESC}")
+  time.sleep(2)
+  mc_click_stop_button()
+
+def mc_choose_game(position):
+  pass
 
 def main():
-    scrn_w = win32api.GetSystemMetrics(0)
-    scrn_h = win32api.GetSystemMetrics(1)
-    game = Game("D:\GameManagememt\玩家体验测试时间隧道2\Doctor_Who_Time_Tunnel-pc\Tardis", "Tardis")
-    game.start()
-    time.sleep(1)
+    #scrn_w = win32api.GetSystemMetrics(0)
+    #scrn_h = win32api.GetSystemMetrics(1)
+    #game = Game("D:\GameManagememt\玩家体验测试时间隧道2\Doctor_Who_Time_Tunnel-pc\Tardis", "Tardis")
+    #game.start()
+    time.sleep(8)
     #SendKeys("{ENTER}")
     #time.sleep(10)
     #game.stop()
-    win32api.SetCursorPos([scrn_w/2, scrn_h/2])
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,0,0,0,0)
-    win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0,0,0)
+    if not is_on_game_page:
+      enter_game_page()
+    time.sleep(5)
+    mc_click_start_button()
+    time.sleep(5)
+    mc_stop_game()
 
 if __name__ == '__main__':
-    #run_svr()
-    main()
+    run_svr()
+    #main()

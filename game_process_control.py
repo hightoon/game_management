@@ -5,9 +5,10 @@ import time
 import win32api, win32con
 from subprocess import Popen
 from bottle import route, request, get, post, run
-from SendKeys import SendKeys
+#from SendKeys import SendKeys
 running_game = None
 is_on_game_page = False
+
 
 class Game(object):
     def __init__(self, path, name):
@@ -49,7 +50,8 @@ def stop_game():
 
 @route('/mc_start_game')
 def mc_start_game():
-  time.sleep(5)
+  print 'start game'
+  time.sleep(1)
   if not is_on_game_page:
     enter_game_page()
     time.sleep(1)
@@ -57,14 +59,15 @@ def mc_start_game():
 
 @route('/mc_stop_game')
 def mc_stop_game():
-  time.sleep(5)
+  print 'stop game'
+  time.sleep(1)
   mc_stop_game()
 
 def mouse_click(x, y):
     pass
 
 def run_svr():
-    run(host='0.0.0.0', port=8080, debug=True)
+    run(host='0.0.0.0', port=8081, debug=True)
 
 def mc_click_start_button():
   scrn_w = win32api.GetSystemMetrics(0)
@@ -89,8 +92,10 @@ def enter_game_page():
   is_on_game_page = True
 
 def mc_stop_game():
-  SendKeys("{ESC}")
-  time.sleep(2)
+  #SendKeys("{ESC}")
+  win32api.keybd_event(27,0,0,0)
+  win32api.keybd_event(27,0, win32con.KEYEVENTF_KEYUP,0)
+  time.sleep(10)
   mc_click_stop_button()
 
 def mc_choose_game(position):

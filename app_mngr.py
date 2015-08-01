@@ -321,11 +321,11 @@ def control_game():
           daily_running_stat[act_user.usrname] + 1
       else:
         daily_running_stat[act_user.usrname] = 1
-      f = urllib2.urlopen('http://%s:8080/mc_start_game'%(host,))
+      f = urllib2.urlopen('http://%s:8081/mc_start_game'%(host,))
       print f.read()
       f.close()
     elif op == 'stop':
-      f = urllib2.urlopen('http://%s:8080/mc_stop_game'%(host,))
+      f = urllib2.urlopen('http://%s:8081/mc_stop_game'%(host,))
       print f.read()
       f.close()
 
@@ -388,7 +388,7 @@ def test_temp():
 @route("/start_game/<host>/<game>", method="POST")
 def start_app(host, game):
   global apps
-  f = urllib2.urlopen('http://192.168.0.4:8080/start_game')
+  f = urllib2.urlopen('http://192.168.0.4:8081/start_game')
   print f.read()
   f.close()
   redirect('/index/%s'%(user,))
@@ -396,7 +396,7 @@ def start_app(host, game):
 @route("/stop_game/<host>/<game>", method="POST")
 def stop_app(host, game):
   global apps
-  f = urllib2.urlopen('http://192.168.0.4:8080/stop_game')
+  f = urllib2.urlopen('http://192.168.0.4:8081/stop_game')
   print f.read()
   f.close()
   redirect('/%s/index'%(user))

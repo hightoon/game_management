@@ -121,7 +121,7 @@ class GameStat:
     ireported = 0
     if reported is True:
       ireported = 1
-    cur = stat_db.cursor
+    cur = GameStat.stat_db.cursor
     #res = cur.execute('select * from gstat where user=:user and game=:game',\
     #  {'user': user, 'game': game}).ftechone()
     #if res == []:
@@ -129,7 +129,7 @@ class GameStat:
     #    (user, host, game, start, end, ireported))
     cur.execute('insert into gstat values (?, ?, ?, ?, ?, ?)',
       (self.user, self.host, self.game, self.price, self.timestamp, self.reported))
-    stat_db.commit()
+    GameStat.stat_db.commit()
     cur.close()
 
 class GamePrice():
@@ -144,16 +144,19 @@ class GamePrice():
     self.shop = shop
 
   def insert2db(self):
-    cur = gp_db.cursor
-    res = cur.execute('select * from gameprice where host=:user and game=:game',\
+    cur = GamePrice.gp_db.cursor
+    res = cur.execute('select * from gameprice where host=:host and game=:game',\
       {'host': self.host, 'game': self.game}).fetchone()
-    if res == []:
+    print res
+    if res is None:
+      print 'insert item into gameprice'
       cur.execute('insert into gameprice values (?, ?, ?, ?, ?)',
         (self.host, self.game, self.price, self.period, self.shop))
     else:
+      print 'update gameprice'
       cur.execute('update gameprice set price=? where host=? and game=?',
         (self.price, self.host, self.game))
-    gp_db.commit()
+    GamePrice.gp_db.commit()
     cur.close()
 
 def parse_line(s):
@@ -399,22 +402,31 @@ def mng_pricing():
   if act_user is not None:
     hosts = get_hosts()
     games = get_games()
+    cur = GamePrice.gp_db.cursor
+    price_list = cur.execute('select * from gameprice').fetchall()
+    cur.close()
+    print price_list
     return template('./management_front_end/view/price_mng.tpl',
                     username=act_user.usrname, is_admin=act_user.is_admin,
                     tot_game_ops=tot_game_runnings,
                     num_of_ops=daily_running_stat[act_user.usrname],
-                    hosts=hosts, games=games)
+                    hosts=hosts, games=games, price_list=price_list)
   else:
     goto_login()
 
 @route("/change_price", method="POST")
 def change_price():
-  shop_name = request.forms.get('shopname')
-  host_name = request.forms.get('hostname')
-  game_name = request.forms.get('gamename')
-  timing    = request.forms.get('gametiming')
-  price     = request.forms.get('price')
-
+  if act_user is not None:
+    shop = request.forms.get('shopname')
+    host = request.forms.get('hostname')
+    game = request.forms.get('gamename')
+    period    = request.forms.get('gametiming')
+    price     = request.forms.get('price')
+    gp = GamePrice(host, game, float(price), period, shop)
+    gp.insert2db()
+    redirect('/pricingmng')
+  else:
+    redirect('/')
 
 @route("/statistics")
 def stat_mng():

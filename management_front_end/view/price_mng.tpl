@@ -82,12 +82,14 @@
             <th>价格</th>
             <th>时间区间</th>
           </tr>
-          <tr>
-            <td>hostA</td>
-            <td>gameA</td>
-            <td>100yuan/hour </td>
-            <td>10:00-11:00</td>
-          </tr>
+          %for price in price_list:
+            <tr>
+              <td>{{price[0]}}</td>
+              <td>{{price[1]}}</td>
+              <td>{{price[2]}} </td>
+              <td>{{price[3]}}</td>
+            </tr>
+          %end
         </table>
       </div>
     </div>

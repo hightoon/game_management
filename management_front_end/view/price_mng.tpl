@@ -42,27 +42,29 @@
         <form action="/change_price" method="post">
           <p>
             <label for="shop-name">店名 </label>
-            <input id="shop-name" type="text" name="shopname">
+            <input id="shop-name" type="text" name="shopname" placeholder="可不填">
           </p>
           <p>
             <label for="host-name">主机 </label>
             <select id="host-name" name="hostname">
-              <option value="hosta">主机A</option>
-              <option value="hostb" selected>主机B</option>
-              <option value="hostc">主机C</option>
+              %for host in hosts:
+                <option value="{{host[0]}}" selected>{{host[0]}}</option>
+              %end
+              <option value="default" selected>请选择</option>
             </select>
           </p>
           <p>
             <label for="game-name">游戏 </label>
             <select id="game-name" name="gamename">
-              <option value="gamea">游戏A</option>
-              <option value="gameb" selected>游戏B</option>
-              <option value="gamec">游戏C</option>
+              %for game in games:
+                <option value="{{game[0]}}" selected>{{game[0]}}</option>
+              %end
+              <option value="default" selected>请选择</option>
             </select>
           </p>
           <p>
             <label for="timing">时间 </label>
-            <input id="timing" type="text" name="gametiming" placeholder="时间区间">
+            <input id="timing" type="text" name="gametiming" placeholder="例如: 13:00-15:00">
           </p>
           <p>
             <label for="price-range">价格 </label>

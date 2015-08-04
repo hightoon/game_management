@@ -16,6 +16,7 @@ act_user = None
 daily_running_stat = {}
 tot_game_runnings = 0
 login_timestamps = {}
+game_stats = []
 
 # database manipulation
 class GMDatabase:
@@ -28,8 +29,8 @@ class GMDatabase:
     c = self.conn.cursor()
     try:
       c.execute("CREATE TABLE %s %s"%(tabname, fmt))
-    except sqlite3.OperationalError:
-      pass
+    except sqlite3.OperationalError as e:
+      print e
 
   def commit(self):
     self.conn.commit()
@@ -103,6 +104,57 @@ class User:
   @is_admin.setter
   def is_admin(self, yesorno):
     self._is_admin = yesorno
+
+class GameStat:
+  db_file = 'game_stat.db'
+  stat_db = GMDatabase(db_file)
+  def __init__(self, user, host, game, price, timestamp, reported):
+    self.user = user
+    self.host = host
+    self.game = game
+    self.price = price
+    self.timestamp = timestamp
+    self.reported = reported
+
+  def insert2db(self):
+    "update game stat info"
+    ireported = 0
+    if reported is True:
+      ireported = 1
+    cur = stat_db.cursor
+    #res = cur.execute('select * from gstat where user=:user and game=:game',\
+    #  {'user': user, 'game': game}).ftechone()
+    #if res == []:
+    #  cur.execute('insert into gstat values (?, ?, ?, ?, ?)',
+    #    (user, host, game, start, end, ireported))
+    cur.execute('insert into gstat values (?, ?, ?, ?, ?, ?)',
+      (self.user, self.host, self.game, self.price, self.timestamp, self.reported))
+    stat_db.commit()
+    cur.close()
+
+class GamePrice():
+  db_file = 'game_price.db'
+  gp_db = GMDatabase(db_file)
+
+  def __init__(self, host, game, price, period, shop):
+    self.host = host
+    self.game = game
+    self.price = price
+    self.period = period
+    self.shop = shop
+
+  def insert2db(self):
+    cur = gp_db.cursor
+    res = cur.execute('select * from gameprice where host=:user and game=:game',\
+      {'host': self.host, 'game': self.game}).fetchone()
+    if res == []:
+      cur.execute('insert into gameprice values (?, ?, ?, ?, ?)',
+        (self.host, self.game, self.price, self.period, self.shop))
+    else:
+      cur.execute('update gameprice set price=? where host=? and game=?',
+        (self.price, self.host, self.game))
+    gp_db.commit()
+    cur.close()
 
 def parse_line(s):
   return s.split()
@@ -321,13 +373,21 @@ def control_game():
           daily_running_stat[act_user.usrname] + 1
       else:
         daily_running_stat[act_user.usrname] = 1
-      f = urllib2.urlopen('http://%s:8081/mc_start_game'%(host,))
-      print f.read()
-      f.close()
+      try:
+        f = urllib2.urlopen('http://%s:8081/mc_start_game'%(host,), timeout=2.0)
+      except:
+        print 'connect to game client %s failed'%host
+      else:
+        print f.read()
+        f.close()
     elif op == 'stop':
-      f = urllib2.urlopen('http://%s:8081/mc_stop_game'%(host,))
-      print f.read()
-      f.close()
+      try:
+        f = urllib2.urlopen('http://%s:8081/mc_stop_game'%(host,), timeout=2.0)
+      except:
+        print 'connect to game client %s failed'%host
+      else:
+        print f.read()
+        f.close()
 
     #calc tot runnings
     global tot_game_runnings
@@ -337,10 +397,13 @@ def control_game():
 @route("/pricingmng")
 def mng_pricing():
   if act_user is not None:
+    hosts = get_hosts()
+    games = get_games()
     return template('./management_front_end/view/price_mng.tpl',
                     username=act_user.usrname, is_admin=act_user.is_admin,
                     tot_game_ops=tot_game_runnings,
-                    num_of_ops=daily_running_stat[act_user.usrname])
+                    num_of_ops=daily_running_stat[act_user.usrname],
+                    hosts=hosts, games=games)
   else:
     goto_login()
 
@@ -351,12 +414,15 @@ def change_price():
   game_name = request.forms.get('gamename')
   timing    = request.forms.get('gametiming')
   price     = request.forms.get('price')
-  todo
+
 
 @route("/statistics")
 def stat_mng():
   if act_user is not None:
-    return "敬请期待。。。"
+    return template('./management_front_end/view/game_stat.tpl',
+        username=act_user.usrname, is_admin=act_user.is_admin,
+        tot_game_ops=tot_game_runnings,
+        num_of_ops=daily_running_stat[act_user.usrname])
   else:
     goto_login()
 
@@ -385,6 +451,7 @@ def test_temp():
            ('hostA', '192.168.0.1', 'basketball', 'running'),]
   return template('./management_front_end/usr_mgr/test_temp.tpl', games=myGames)
 
+#------- demo code ---------#
 @route("/start_game/<host>/<game>", method="POST")
 def start_app(host, game):
   global apps
@@ -400,6 +467,7 @@ def stop_app(host, game):
   print f.read()
   f.close()
   redirect('/%s/index'%(user))
+#------- demo code ---------#
 
 @route('/restricted')
 def restricted():
@@ -432,6 +500,13 @@ def main():
     usr_db.commit()
   else:
     print "admin already existed"
+
+  GameStat.stat_db.create_table('gstat',
+      '(user text, host text, game text, price real, timestamp text, reported text)'
+  )
+
+  GamePrice.gp_db.create_table('gameprice',
+    '(host text, game text, price real, period text, shop text)')
 
   run(host='0.0.0.0', port=80, Debug=True, reloader=False)
   #run(host='localhost', port=80, Debug=True)

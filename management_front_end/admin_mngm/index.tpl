@@ -9,7 +9,7 @@
   <!-- More on helper.js in the class -->
   <script src="/static/management_front_end/js/helper.js"></script>
 </head>
-<body unresolved>
+<body>
   <div id="main" class="managementpage">
     <div class="row">
       <div id="welcome-bar" class="col-4"><p>
@@ -33,7 +33,7 @@
       <div id="message-bar" class="col-12"><p>总部新闻：xxxxxx</p></div>
     </div>
     <!--div id="message-bar" class="row"><h6>系统消息：xxxxxx</h6></div-->
-    <div class="row">
+    <!--div class="row"-->
       <div class="col-2">
         <ul class="block-list">
           %if is_admin:
@@ -62,7 +62,7 @@
           %end
         </p>
       </div>
-    </div>
+    <!--/div-->
   </div>
   <script src="/static/management_front_end/js/eventhandler.js"></script>
 </body>

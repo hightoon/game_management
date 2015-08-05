@@ -224,7 +224,11 @@ span.company-home {
 }
 
 table.game-stat-table {
-  margin-left: 300px;
+  margin-left: 10px;
+  padding: 30px;
+}
+table.detail-game-stat {
+  margin-left: 10px;
   padding: 30px;
 }
 

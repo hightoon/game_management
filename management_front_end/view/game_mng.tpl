@@ -97,16 +97,18 @@
               <th>按键接口</th>
               <th>备注</th>
             </tr>
+            %for state in game_states:
             <tr>
-              <td>主机A</td>
-              <td>火焰飞车</td>
-              <td>运行中</td>
+              <td>{{state[0]}}</td>
+              <td>{{state[1]}}</td>
+              <td>{{state[2]}}</td>
               <td><button type="button" onclick="pressSpace()">空格</button>
                 &nbsp
                 <button type="button" onclick="pressEnter()">回车</button>
               </td>
-              <td>小孩</td>
+              <td></td>
             </tr>
+            %end
           </table>
           </div>
         </div>

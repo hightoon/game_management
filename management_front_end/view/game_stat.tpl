@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>xxx游戏管理系统</title>
+  <title>游戏管理系统</title>
   <link rel="stylesheet" type="text/css" href="/static/management_front_end/admin_mngm/css/style.css">
   <script src="/static/management_front_end/js/jQuery.js"></script>
 
@@ -58,6 +58,42 @@
               <th>次数</th>
               <th>是否上报</th>
             </tr>
+            %for gminfo in gminfolist:
+              <tr>
+                <td>{{gminfo[1]}}</td>
+                <td>{{gminfo[2]}}</td>
+                <td>{{gminfo[0]}}</td>
+                <td>{{gminfo[3]}}</td>
+                <td>{{gminfo[4]}}</td>
+              </tr>
+            %end
+          </tbody>
+        </table>
+        <h4>详细报表</h4>
+        <table class="detail-game-stat">
+          <tbody>
+            <tr>
+              <th>主机</th>
+              <th>游戏</th>
+              <th>价格</th>
+              <th>时间</th>
+              <th>店员</th>
+              <th>是否上报</th>
+              <th>店名</th>
+              <th>区域</th>
+            </tr>
+            %for detail in detailed_game_info:
+              <tr>
+                <td>{{detail[1]}}</td>
+                <td>{{detail[2]}}</td>
+                <td>{{detail[3]}}</td>
+                <td>{{detail[4]}}</td>
+                <td>{{detail[0]}}</td>
+                <td>{{detail[5]}}</td>
+                <td>梦幻谷</td>
+                <td>杭州</td>
+              </tr>
+            %end
           </tbody>
         </table>
       </div>

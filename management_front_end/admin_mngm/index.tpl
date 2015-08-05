@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>xxx游戏管理系统</title>
+  <title>游戏管理系统</title>
   <link rel="stylesheet" type="text/css" href="/static/management_front_end/admin_mngm/css/style.css">
   <script src="/static/management_front_end/js/jQuery.js"></script>
 

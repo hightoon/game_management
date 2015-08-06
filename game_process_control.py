@@ -9,7 +9,6 @@ from bottle import route, request, get, post, run
 running_game = None
 is_on_game_page = False
 
-
 class Game(object):
     def __init__(self, path, name):
         self._path = path
@@ -63,11 +62,20 @@ def mc_stop_game():
   time.sleep(1)
   mc_stop_game()
 
-def mouse_click(x, y):
-    pass
+def get_host():
+  fd = open('client_host.txt')
+  host = fd.read()
+  fd.close()
+  return host
 
 def run_svr():
-    run(host='0.0.0.0', port=8081, debug=True)
+  host = get_host()
+  print host
+  run(host=host, port=8081, debug=True)
+
+def mc_click_left():
+  win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,0,0,0,0)
+  win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP,0,0,0,0)
 
 def mc_click_start_button():
   scrn_w = win32api.GetSystemMetrics(0)
@@ -99,7 +107,32 @@ def mc_stop_game():
   mc_click_stop_button()
 
 def mc_choose_game(position):
-  pass
+  resol_w = win32api.GetSystemMetrics(0)/5
+  resol_h = win32api.GetSystemMetrics(1)/8
+  offset_h = win32api.GetSystemMetrics(1)/16
+  #goto_top
+  win32api.SetCursorPos([resol_w, resol_h*1+offset_h])
+  mc_click_left()
+  for i in range(16):
+    # press pageup key
+    win32api.keybd_event(33, 0, 0, 0)
+    win32api.keybd_event(33, 0, win32con.KEYEVENTF_KEYUP, 0)
+    time.sleep(0.1)
+  if position < 8:
+    win32api.SetCursorPos([resol_w, resol_h*position+offset_h])
+    mc_click_left()
+  else:
+    win32api.SetCursorPos([resol_w, resol_h*7+offset_h])
+    mc_click_left()
+    #invoke kb resp
+    win32api.keybd_event(34, 0, 0, 0)
+    win32api.keybd_event(34, 0, win32con.KEYEVENTF_KEYUP, 0)
+    for i in range(position-7):
+      win32api.keybd_event(34, 0, 0, 0)
+      win32api.keybd_event(34, 0, win32con.KEYEVENTF_KEYUP, 0)
+      time.sleep(0.1)
+    win32api.SetCursorPos([resol_w, resol_h*7+offset_h])
+    mc_click_left()
 
 def main():
     #scrn_w = win32api.GetSystemMetrics(0)
@@ -112,11 +145,23 @@ def main():
     #game.stop()
     if not is_on_game_page:
       enter_game_page()
-    time.sleep(5)
-    mc_click_start_button()
-    time.sleep(5)
-    mc_stop_game()
+    time.sleep(3)
+    mc_choose_game(1)
+    time.sleep(3)
+    mc_choose_game(3)
+    time.sleep(3)
+    mc_choose_game(5)
+    time.sleep(3)
+    mc_choose_game(7)
+    time.sleep(3)
+    mc_choose_game(9)
+    time.sleep(3)
+    mc_choose_game(13)
+    time.sleep(3)
+    mc_choose_game(15)
+    time.sleep(3)
+    
 
 if __name__ == '__main__':
-    run_svr()
-    #main()
+    #run_svr()
+    main()

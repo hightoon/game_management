@@ -20,7 +20,7 @@ class Game(object):
     def start(self):
         self._process = Popen(self._path, shell=False)
         self._running = True
-        
+
     def stop(self):
         if self._process:
             self._process.terminate()
@@ -32,7 +32,7 @@ class Game(object):
 @route('/start_game')
 def start_game():
     global running_game
-    game = Game("D:\\GameManagememt\\[vrword.cn]³¬¼¶ÀºÇò\\Baskhead v0.1\\Baskhead", "BaskHead")
+    game = Game("D:\\GameManagememt\\[vrword.cn]ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\\Baskhead v0.1\\Baskhead", "BaskHead")
     game.start()
     if running_game:
         running_game.stop()
@@ -56,10 +56,22 @@ def mc_start_game():
     time.sleep(1)
     mc_click_start_button()
 
+@route('/mc_start_game/<game_path>',)
+def mc_start_game(game_path):
+  print game_path
+  if game_path startswith('pos'):
+    pos = int(game_path[4:])
+  if not is_on_game_page:
+    enter_game_page()
+    time.sleep(0.5)
+  mc_choose_game(pos)
+  time.sleep(0.5)
+  mc_click_start_button()
+
 @route('/mc_stop_game')
 def mc_stop_game():
   print 'stop game'
-  time.sleep(1)
+  time.sleep(0.5)
   mc_stop_game()
 
 def get_host():
@@ -137,7 +149,7 @@ def mc_choose_game(position):
 def main():
     #scrn_w = win32api.GetSystemMetrics(0)
     #scrn_h = win32api.GetSystemMetrics(1)
-    #game = Game("D:\GameManagememt\Íæ¼ÒÌåÑé²âÊÔÊ±¼äËíµÀ2\Doctor_Who_Time_Tunnel-pc\Tardis", "Tardis")
+    #game = Game("D:\GameManagememt\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2\Doctor_Who_Time_Tunnel-pc\Tardis", "Tardis")
     #game.start()
     time.sleep(8)
     #SendKeys("{ENTER}")
@@ -160,7 +172,7 @@ def main():
     time.sleep(3)
     mc_choose_game(15)
     time.sleep(3)
-    
+
 
 if __name__ == '__main__':
     #run_svr()

@@ -1,9 +1,10 @@
 function pressSpace(but_val) {
-  alert("space entered!" + $but_val);
+    post('http://'+$but_val+'/mc_start_game')
+    alert("空格已发送" + $but_val);
 }
 
 function pressEnter(but_val) {
-  alert("enter entered!" + $but_val);
+    alert("空格已发送" + $but_val);
 }
 
 function post(path, params, method) {

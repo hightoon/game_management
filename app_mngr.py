@@ -145,6 +145,37 @@ class GameStat:
         return h[2]
     return -1
 
+  @classmethod
+  def store_report(self):
+    import csv
+    from ftplib import FTP
+    try:
+      host, usr, passwd = '120.25.234.94', 'vr', 'vrword.cn'
+      #host, usr, passwd = '10.140.162.182', 'codec', '111111'
+      ftp = FTP(host)
+      ftp.login(usr, passwd)
+    except Exception as e:
+      print e
+      return False
+    now = datetime.now()
+    today_strf = datetime.strftime(now, '%Y-%m-%d')
+    file = today_strf + '.csv'
+    start = today_strf + ' 00:00:00'
+    end   = today_strf + ' 23:59:59'
+    with open(file, 'wb') as f:
+      f.write('\xEF\xBB\xBF')
+      writer = csv.writer(f)
+      header = ('店员', '主机', '游戏', '价格', '时间', '是否上报')
+      writer.writerow(header)
+      cur = GameStat.stat_db.cursor
+      cur.execute('select * from gstat where datetime(timestamp) between datetime(?) and datetime(?)',\
+        (start, end))
+      writer.writerows(cur.fetchall())
+      cur.close()
+    ftp.storbinary('STOR ' + file, open(file, 'rb'))
+    ftp.quit()
+    return True
+
 class GamePrice():
   db_file = 'game_price.db'
   gp_db = GMDatabase(db_file)
@@ -204,6 +235,7 @@ def get_host_by_name(name):
   for h in get_hosts():
     if h[0] == name:
       return h[1]
+  return None
 
 def get_games():
   games = []
@@ -212,6 +244,12 @@ def get_games():
     games.append(parse_line(ln))
   fd.close()
   return games
+
+def get_game_path_by_name(name):
+  for game in get_games():
+    if game[0] == game:
+      return game[1]
+  return None
 
 @route('/')
 def main():
@@ -436,7 +474,8 @@ def control_game():
       else:
         daily_running_stat[act_user.usrname] = 1
       try:
-        f = urllib2.urlopen('http://%s:8081/mc_start_game'%(host,), timeout=2.0)
+        f = urllib2.urlopen('http://%s:8081/mc_start_game/%s'%(host, get_game_path_by_name(game)), 
+            timeout=2.0)
       except:
         print 'connect to game client %s failed'%host
       else:
@@ -597,6 +636,21 @@ def drop_tables():
   GamePrice.gp_db.cursor.execute('drop table gameprice')
   GameState.gs_db.cursor.execute('drop table gamestate')
 
+# timer
+import time
+import threading
+class Timer(threading.Thread):
+  def __init__(self):
+    threading.Thread.__init__(self)
+  def run(self):
+    while True:
+      now = datetime.now()
+      if now.hour < 24 and now.minute % 5 == 0:
+        if GameStat.store_report():
+          print 'sent report'
+          return
+        time.sleep(30)
+
 def main():
   # add admin as default user
   #drop_tables()
@@ -613,6 +667,8 @@ def main():
   else:
     print "admin already existed"
 
+  rprtimer = Timer()
+  rprtimer.start()
   run(host='0.0.0.0', port=80, Debug=True, reloader=False)
   #run(host='localhost', port=80, Debug=True)
 

@@ -120,7 +120,7 @@ class GameStat:
     "update game stat info"
     now = datetime.now()
     timestamp = datetime.strftime(now, self.tsformat)
-    price = self.get_price(now)
+    price = self.get_price(now, self.host, self.game)
     cur = GameStat.stat_db.cursor
     #res = cur.execute('select * from gstat where user=:user and game=:game',\
     #  {'user': user, 'game': game}).ftechone()
@@ -132,17 +132,18 @@ class GameStat:
     GameStat.stat_db.commit()
     cur.close()
 
-  def get_price(self, now):
+  @classmethod
+  def get_price(self, now, host, game):
     cur = GamePrice.gp_db.cursor
-    hostinfo = cur.execute('select * from gameprice where host=? and game=?',
-                  (self.host, self.game)).fetchall()
+    hostinfo = cur.execute('select * from gameprice where host=? and game=?',\
+                  (host, game)).fetchall()
     for h in hostinfo:
       time_range = map(datetime.strptime, h[3].split('-'), ['%H:%M', '%H:%M'])
       if (now.hour*60+now.minute) in \
           range(time_range[0].hour*60+time_range[0].minute,
                 time_range[1].hour*60+time_range[1].minute+1):
         return h[2]
-    return 20
+    return -1
 
 class GamePrice():
   db_file = 'game_price.db'
@@ -198,6 +199,11 @@ def get_hosts():
     hosts.append(parse_line(ln))
   fd.close()
   return hosts
+
+def get_host_by_name(name):
+  for h in get_hosts():
+    if h[0] == name:
+      return h[1]
 
 def get_games():
   games = []
@@ -384,18 +390,27 @@ def mng_game():
     games = get_games()
     cur = GameState.gs_db.cursor
     running_games = cur.execute('select * from gamestate where state=?', ('running',)).fetchall()
+    running_pairs = []
+    idle_ip_hosts = []
+    running_hosts = []
+    for game in running_games:
+      running_pairs.append((game[0], game[1], get_host_by_name(game[0]),))
+      running_hosts.append(game[0])
+    for h in hosts:
+      if h[0] not in running_hosts:
+        idle_ip_hosts.append((h[0], h[1],))
     cur.close()
     return template('./management_front_end/view/game_mng.tpl',
                     username=act_user.usrname, is_admin=act_user.is_admin,
                     tot_game_ops=tot_game_runnings,
                     num_of_ops=daily_running_stat[act_user.usrname],
-                    hosts=hosts, games=games, game_states=running_games)
+                    hosts=idle_ip_hosts, game_states=running_pairs,
+                    games=games)
   else:
     goto_login()
 
 @route("/game_control", method="POST")
 def control_game():
-  print 'start game remote control'
   if act_user is not None:
     host = request.forms.get("host")
     game = request.forms.get("game")
@@ -409,6 +424,10 @@ def control_game():
       if gameinfo[1] == game:
         gamename = gameinfo[0]
         break
+    # check if game price has been set
+    # only game with price can be started
+    if GameStat.get_price(datetime.now(), hostname, gamename) < 0:
+      return '游戏价格未设置，请进入<价格管理>界面进行设置，或联系管理员。'
     if op == 'start':
       #inc_num_of_ops(act_user.usrname)
       if act_user.usrname in daily_running_stat.keys():
@@ -516,15 +535,7 @@ def stat_mng():
 @route("/notification")
 def notif_mng():
   if act_user is not None:
-    news="""
-    青年朋友们：
-
-　　值此中华全国青年联合会第十二届委员会全体会议和中华全国学生联合会第二十六次代表大会开幕之际，我代表党中央，向大会的召开表示热烈的祝贺！向全国各族各界青年和青年学生、向广大海外中华青年，表示诚挚的问候！
-
-　　紧跟时代砥砺前行，担当责任奋发有为，是我国青年的光荣传统，也是党和人民对广大青年的殷切期望。5年来，在党的坚强领导和共青团帮助指导下，各级青联和学联组织围绕中心、服务大局，积极组织青年、宣传青年、教育青年、引导青年，各项工作取得可喜成绩。广大青年和青年学生响应党的号召，胸怀祖国和人民，奉献社会和他人，积极投身坚持和发展中国特色社会主义伟大实践，以实际行动证明，当代中国青年不愧为大有希望、大有作为的一代。
-
-　　“士不可以不弘毅，任重而道远。”国家的前途，民族的命运，人民的幸福，是当代中国青年必须和必将承担的重任。一代青年有一代青年的历史际遇。我们的国家正在走向繁荣富强，我们的民族正在走向伟大复兴，我们的人民正在走向更加幸福美好的生活。当代中国青年要有所作为，就必须投身人民的伟大奋斗。同人民一起奋斗，青春才能亮丽；同人民一起前进，青春才能昂扬；同人民一起梦想，青春才能无悔。
-    """
+    news=''
     return template('./management_front_end/view/notif_mng.tpl',
                     username=act_user.usrname, is_admin=act_user.is_admin,
                     latest_news=news, tot_game_ops=tot_game_runnings,

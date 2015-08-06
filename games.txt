@@ -1,2 +1,2 @@
-飞锤360 dir=d:\games\fc360
-火焰过山车 dir=d:\games\gsc
+飞锤360 pos=1
+火焰过山车 pos=2

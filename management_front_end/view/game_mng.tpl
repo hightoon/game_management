@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>xxx游戏管理系统</title>
+  <title>游戏管理系统</title>
   <link rel="stylesheet" type="text/css" href="/static/management_front_end/admin_mngm/css/style.css">
   <script src="/static/management_front_end/js/jQuery.js"></script>
 
@@ -54,38 +54,47 @@
           <form id="start-game-form" action="/game_control" method="POST">
             <p>
               <label for="host">
-                <span>主机</span>
+                <span>空闲主机</span>
                 <select name="host">
                   %for host in hosts:
-                    <option value="{{host[1]}}" selected>{{host[0]}}</option>
+                    <option value="{{host[1]}}">{{host[0]}}</option>
                   %end
-                  <option value="default" selected>请选择</option>
-                    <!--option value="host1">主机A</option>
-                    <option value="host2" selected>主机B</option>
-                    <option value="host3">主机C</option-->
                 </select>
               </label>
               <label for="game">
                 <span>游戏</span>
                 <select name="game">
                   %for game in games:
-                  <option value="{{game[1]}}" selected>{{game[0]}}</option>
+                  <option value="{{game[1]}}">{{game[0]}}</option>
                   %end
-                  <option value="default" selected>请选择</option>
-                  <!--option value="game1">火焰飞车</option>
-                  <option value="game2" selected>火焰投篮</option>
-                  <option value="game3">火焰足球</option-->
                 </select>
               </label>
             </p>
           </form>
         </div>
         <div class="row">
-          <span>控制 </span>
+          <!--span>控制 </span-->
           <button type="submit" form="start-game-form" name="op" value="start">开始</button>
-          <button type="submit" form="start-game-form" name="op" value="reset">重置</button>
-          <button type="submit" form="start-game-form" name="op" value="stop">停止</button>
         </div>
+
+        <div class="row">
+          <form id="stop-game-form" action="/game_control" method="POST">
+            <p>
+              <label for="host">
+                <span>运行中游戏</span>
+                <select name="host">
+                  %for state in game_states:
+                    <option value="{{state[2]}}">{{state[0]}} / {{state[1]}}</option>
+                  %end
+                </select>
+              </label>
+            </p>
+          </form>
+        </div>
+        <div class="row">
+          <button type="submit" form="stop-game-form" name="op" value="stop">停止</button>
+        </div>
+
         <h5 id="host-game-kb-ctrl">游戏控制(键盘)</h5>
         <div class="row" id="game-control-table">
           <div class="col-9">
@@ -101,10 +110,10 @@
             <tr>
               <td>{{state[0]}}</td>
               <td>{{state[1]}}</td>
-              <td>{{state[2]}}</td>
-              <td><button type="button" onclick="pressSpace()">空格</button>
+              <td>运行中</td>
+              <td><button type="button" value="{{state[2]}}" onclick="pressSpace(this.value)">空格</button>
                 &nbsp
-                <button type="button" onclick="pressEnter()">回车</button>
+                <button type="button" value="{{state[2]}}" onclick="pressEnter(this.value)">回车</button>
               </td>
               <td></td>
             </tr>

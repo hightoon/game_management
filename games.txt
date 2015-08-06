@@ -1,2 +1,2 @@
-飞锤360 dir=
-火焰过山车 dir=
+飞锤360 dir=d:\games\fc360
+火焰过山车 dir=d:\games\gsc

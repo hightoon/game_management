@@ -744,7 +744,7 @@ def main():
 
   rprtimer = Timer()
   rprtimer.start()
-  run(host='0.0.0.0', port=80, Debug=True, reloader=False)
+  run(host='localhost', port=8081, Debug=True, reloader=False)
   #run(host='localhost', port=80, Debug=True)
 
 if __name__ == '__main__':

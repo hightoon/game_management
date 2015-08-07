@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 from subprocess import Popen
 from bottle import route, request, redirect, template,static_file, run
 
+import NewsFeed
 # globals for debug purpose
 apps = []
 act_user = None
@@ -387,7 +388,7 @@ def user_index(username):
                     nowtime="%02d:%02d:%02d"%(now.hour, now.minute, now.second),
                     tot_game_ops=tot_game_runnings,
                     num_of_ops=daily_running_stat[act_user.usrname],
-                    usrinfo=usrinfo)
+                    usrinfo=usrinfo, news_title=NewsFeed.title)
   else:
     redirect('/')
 
@@ -405,7 +406,7 @@ def mng_user():
                       is_admin=act_user.is_admin,
                       tot_game_ops=tot_game_runnings,
                       num_of_ops=daily_running_stat[act_user.usrname],
-                      username=act_user.usrname)
+                      username=act_user.usrname, news_title=NewsFeed.title)
     else:
       redirect('/restricted')
 
@@ -467,7 +468,7 @@ def mng_game():
                     tot_game_ops=tot_game_runnings,
                     num_of_ops=daily_running_stat[act_user.usrname],
                     hosts=idle_ip_hosts, game_states=running_pairs,
-                    games=games)
+                    games=games, news_title=NewsFeed.title)
   else:
     goto_login()
 
@@ -545,7 +546,8 @@ def mng_pricing():
                     username=act_user.usrname, is_admin=act_user.is_admin,
                     tot_game_ops=tot_game_runnings,
                     num_of_ops=daily_running_stat[act_user.usrname],
-                    hosts=hosts, games=games, price_list=price_list)
+                    hosts=hosts, games=games, price_list=price_list,
+                    news_title=NewsFeed.title)
   else:
     goto_login()
 
@@ -602,7 +604,8 @@ def stat_mng():
         username=act_user.usrname, is_admin=act_user.is_admin,
         tot_game_ops=tot_game_runnings,
         num_of_ops=daily_running_stat[act_user.usrname],
-        gminfolist=gen_gm_info_lst, detailed_game_info=gmlist)
+        gminfolist=gen_gm_info_lst, detailed_game_info=gmlist,
+        news_title=NewsFeed.title)
   else:
     goto_login()
 
@@ -647,11 +650,12 @@ def stat_mng():
 @route("/notification")
 def notif_mng():
   if act_user is not None:
-    news=''
+    news = NewsFeed.desc + '(' + NewsFeed.link + ')'
     return template('./management_front_end/view/notif_mng.tpl',
                     username=act_user.usrname, is_admin=act_user.is_admin,
                     latest_news=news, tot_game_ops=tot_game_runnings,
-                    num_of_ops=daily_running_stat[act_user.usrname])
+                    num_of_ops=daily_running_stat[act_user.usrname],
+                    news_title=NewsFeed.title)
   else:
     goto_login()
 

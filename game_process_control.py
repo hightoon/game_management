@@ -47,18 +47,9 @@ def stop_game():
         running_game = None
     return 'ok'
 
-@route('/mc_start_game')
-def mc_start_game():
-  print 'start game'
-  time.sleep(1)
-  if not is_on_game_page:
-    enter_game_page()
-    time.sleep(1)
-    mc_click_start_button()
-  return 'ok'
-
-@route('/mc_start_game/<game_path>',)
+@route('/mc_start_game/<game_path>')
 def mc_start_game(game_path):
+  print game_path
   if game_path.startswith('pos'):
     pos = int(game_path[4:])
     if not is_on_game_page:
@@ -69,25 +60,50 @@ def mc_start_game(game_path):
     mc_click_start_button()
   elif game_path.startswith('dir'):
     global running_game
-    game = Game(game_path[4:], "anonymous")
+    path = game_path[4:].replace('|', '\\').replace('_', ' ')
+    print path
+    game = Game(path, "anonymous")
     game.start()
     if running_game:
         running_game.stop()
     running_game = game
+  else: 
+    print 'game path not valid'
+    return 'nok'
   return 'ok'
 
 @route('/mc_stop_game')
 def mc_stop_game():
   print 'stop game'
+  global running_game
+  if running_game:
+    running_game.stop()
+    running_game = None
+    return 'ok'
   time.sleep(0.5)
   mc_stop_game()
   return 'ok'
+  
+@route('/press_keyboards/space', method='POST')
+def press_space():
+  win32api.keybd_event(32, 0, 0, 0)
+  win32api.keybd_event(32, 0, win32con.KEYEVENTF_KEYUP, 0)
+  print 'space pressed'
+  return 'ok'
+  
+@route('/press_keyboards/enter', method='POST')
+def press_enter():
+  win32api.keybd_event(13, 0, 0, 0)
+  win32api.keybd_event(13, 0, win32con.KEYEVENTF_KEYUP, 0)
+  print 'enter pressed'
+  return 'ok'
 
 def get_host():
-  fd = open('client_host.txt')
-  host = fd.read()
-  fd.close()
-  return host
+  #fd = open('client_host.txt')
+  #host = fd.read()
+  #fd.close()
+  #return host
+  pass
 
 def run_svr():
   host = get_host()
@@ -183,7 +199,17 @@ def main():
     mc_choose_game(15)
     time.sleep(3)
 
+def test_exe_file():
+    fd = open('games.txt', 'rb')
+    path = ''
+    fd.close()
+    print path
+    g = Game(path, '')
+    g.start()
+    time.sleep(5)
+    g.stop()
 
 if __name__ == '__main__':
     run_svr()
     #main()
+    #test_exe_file()

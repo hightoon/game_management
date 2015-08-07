@@ -1,14 +1,5 @@
-function pressSpace(but_val) {
-    post('http://'+$but_val+'/mc_start_game')
-    alert("空格已发送" + $but_val);
-}
-
-function pressEnter(but_val) {
-    alert("空格已发送" + $but_val);
-}
-
-function post(path, params, method) {
-    method = method || "post"; // Set method to post by default if not specified.
+function post(path) {
+    method = "post"; // Set method to post by default if not specified.
 
     // The rest of this code assumes you are not using a library.
     // It can be made less wordy if you use one.
@@ -16,7 +7,7 @@ function post(path, params, method) {
     form.setAttribute("method", method);
     form.setAttribute("action", path);
 
-    for(var key in params) {
+    /*for(var key in params) {
         if(params.hasOwnProperty(key)) {
             var hiddenField = document.createElement("input");
             hiddenField.setAttribute("type", "hidden");
@@ -25,8 +16,18 @@ function post(path, params, method) {
 
             form.appendChild(hiddenField);
          }
-    }
+    }*/
 
     document.body.appendChild(form);
     form.submit();
+}
+
+function pressSpace(but_val) {
+    alert("空格已发送" + but_val);
+    post("http://" + but_val + ":8081" + "/press_keyboards/space");
+}
+
+function pressEnter(but_val) {
+    alert("回车已发送" + but_val);
+    post("http://" + but_val + ":8081" + "/press_keyboards/enter");
 }

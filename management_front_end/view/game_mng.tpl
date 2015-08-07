@@ -30,7 +30,7 @@
           %end
         </p>
       </div>
-      <div id="message-bar" class="col-12"><p>总部新闻：xxxxxx</p></div>
+      <div id="message-bar" class="col-12"><p>总部新闻：暂无新闻</p></div>
     </div>
     <!--div id="message-bar" class="row"><h6>系统消息：xxxxxx</h6></div-->
     <div class="row">
@@ -84,7 +84,7 @@
                 <span>运行中游戏</span>
                 <select name="host">
                   %for state in game_states:
-                    <option value="{{state[2]}}">{{state[0]}} / {{state[1]}}</option>
+                    <option value="{{state[0]}}:{{state[1]}}">{{state[0]}} / {{state[1]}}</option>
                   %end
                 </select>
               </label>
@@ -93,6 +93,7 @@
         </div>
         <div class="row">
           <button type="submit" form="stop-game-form" name="op" value="stop">停止</button>
+          <button type="submit" form="stop-game-form" name="op" value="reset">重置(恢复主机状态)</button>
         </div>
 
         <h5 id="host-game-kb-ctrl">游戏控制(键盘)</h5>

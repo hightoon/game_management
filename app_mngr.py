@@ -6,7 +6,7 @@
 """
 
 import time, urllib2, sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta
 from subprocess import Popen
 from bottle import route, request, redirect, template,static_file, run
 
@@ -147,7 +147,7 @@ class GameStat:
 
   @classmethod
   def store_report(self):
-    import csv
+    import csv, os
     from ftplib import FTP
     try:
       host, usr, passwd = '120.25.234.94', 'vr', 'vrword.cn'
@@ -167,11 +167,14 @@ class GameStat:
       writer = csv.writer(f)
       header = ('店员', '主机', '游戏', '价格', '时间', '是否上报')
       writer.writerow(header)
-      cur = GameStat.stat_db.cursor
+      conn = sqlite3.connect(GameStat.db_file)
+      conn.text_factory = str
+      cur = conn.cursor()
       cur.execute('select * from gstat where datetime(timestamp) between datetime(?) and datetime(?)',\
         (start, end))
       writer.writerows(cur.fetchall())
       cur.close()
+      conn.close()
     ftp.storbinary('STOR ' + file, open(file, 'rb'))
     ftp.quit()
     return True
@@ -221,7 +224,8 @@ class GameState():
     cur.close()
 
 def parse_line(s):
-  return s.split()
+  res = s.split()
+  return res[0], ' '.join(res[1:])
 
 def get_hosts():
   hosts = []
@@ -274,8 +278,8 @@ def do_login():
   forgot = request.forms.get('forget_passwd')
 
   if forgot:
-    print forgot
     print 'sending password to %s'%(username,)
+    mail_passwd_to(username)
     return "密码发送至，请查看邮箱并返回登录页面重新登录。。。"
 
   isvalid, isadmin = validate_from_db(username, password)
@@ -292,6 +296,26 @@ def do_login():
     redirect('/index/%s'%username)
   else:
     redirect('/')
+
+def mail_passwd_to(usr):
+  import smtplib
+  cur = User.user_db.cursor
+  cur.execute('select * from users where name=?', (usr,))
+  res = cur.fetchone()
+  if res is None:
+    return '用户不存在，请联系管理员添加用户！'
+  else:
+    _, passwd, _, email, _, _ = res
+    fromaddr = 'bbs@vrword.cn'
+    toaddrs = [email]
+    msg = ("From: %s\r\nTo: %s\r\n\r\n"
+       % (fromaddr, ", ".join(toaddrs)))
+    msg = msg + '您好，您的VR游戏关系系统登录密码为%s'%passwd
+    server = smtplib.SMTP('smtp.vrword.cn')
+    #server.set_debuglevel(1)
+    svr.login('bbs@vrword.cn', 'lovexue1314.com')
+    server.sendmail(fromaddr, toaddrs, msg)
+    server.quit()
 
 def check_login(usr, pwd):
   if usr == 'admin' and pwd == 'admin':
@@ -450,23 +474,23 @@ def mng_game():
 @route("/game_control", method="POST")
 def control_game():
   if act_user is not None:
-    host = request.forms.get("host")
-    game = request.forms.get("game")
     op = request.forms.get("op")
-    print host, game, op
-    for hostinfo in get_hosts():
-      if hostinfo[1] == host:
-        hostname = hostinfo[0]
-        break
-    for gameinfo in get_games():
-      if gameinfo[1] == game:
-        gamename = gameinfo[0]
-        break
     # check if game price has been set
     # only game with price can be started
-    if GameStat.get_price(datetime.now(), hostname, gamename) < 0:
-      return '游戏价格未设置，请进入<价格管理>界面进行设置，或联系管理员。'
     if op == 'start':
+      host = request.forms.get("host")
+      game = request.forms.get("game")
+      print host, game
+      for hostinfo in get_hosts():
+        if hostinfo[1] == host:
+          hostname = hostinfo[0]
+          break
+      for gameinfo in get_games():
+        if gameinfo[1] == game:
+          gamename = gameinfo[0]
+          break
+      if GameStat.get_price(datetime.now(), hostname, gamename) < 0:
+        return '游戏价格未设置，请进入<价格管理>界面进行设置，或联系管理员。'
       #inc_num_of_ops(act_user.usrname)
       if act_user.usrname in daily_running_stat.keys():
         daily_running_stat[act_user.usrname] = \
@@ -474,30 +498,34 @@ def control_game():
       else:
         daily_running_stat[act_user.usrname] = 1
       try:
-        f = urllib2.urlopen('http://%s:8081/mc_start_game/%s'%(host, get_game_path_by_name(game)), 
-            timeout=2.0)
-      except:
-        print 'connect to game client %s failed'%host
+        f = urllib2.urlopen('http://%s:8081/mc_start_game/%s'%(host, game),
+            timeout=30)
+      except Exception as e:
+        print 'connect to game client %s failed: %s'%(host, e)
       else:
         print f.read()
         f.close()
-      gstate = GameState(hostname, gamename, state='running')
-      gstate.insert2db()
-      gstat = GameStat(act_user.usrname, hostname, gamename, "no")
-      gstat.insert2db()
+        gstate = GameState(hostname, gamename, state='running')
+        gstate.insert2db()
+        gstat = GameStat(act_user.usrname, hostname, gamename, "no")
+        gstat.insert2db()
     elif op == 'stop':
+      host, game = tuple(request.forms.get('host').split(':'))
       try:
-        f = urllib2.urlopen('http://%s:8081/mc_stop_game'%(host,), timeout=2.0)
+        f = urllib2.urlopen('http://%s:8081/mc_stop_game'%(get_host_by_name(host),), timeout=20)
       except:
         print 'connect to game client %s failed'%host
       else:
         print f.read()
         f.close()
-      gstate = GameState(hostname, gamename, state='idle')
+        gstate = GameState(host, game, state='idle')
+        gstate.insert2db()
+        gstat = GameStat(act_user.usrname, host, game, "yes")
+        gstat.insert2db()
+    elif op == 'reset':
+      host, game = tuple(request.forms.get('host').split(':'))
+      gstate = GameState(host, game, state='idle')
       gstate.insert2db()
-      gstat = GameStat(act_user.usrname, hostname, gamename, "yes")
-      gstat.insert2db()
-
     #calc tot runnings
     global tot_game_runnings
     tot_game_runnings = sum(daily_running_stat.values())
@@ -510,6 +538,7 @@ def mng_pricing():
     games = get_games()
     cur = GamePrice.gp_db.cursor
     price_list = cur.execute('select * from gameprice').fetchall()
+    print price_list
     cur.close()
     print price_list
     return template('./management_front_end/view/price_mng.tpl',
@@ -531,7 +560,7 @@ def change_price():
     try:
       price = float(price)
     except ValueError:
-      return '价格格式有误，请返回重新修改！'
+      return '价格格式有误(只能包含数字和小数点)，请返回重新修改!'
     try:
       map(datetime.strptime, period.split('-'), ['%H:%M', '%H:%M'])
     except ValueError:
@@ -546,7 +575,51 @@ def change_price():
 def stat_mng():
   if act_user is not None:
     cur = GameStat.stat_db.cursor
-    gmlist = cur.execute('select * from gstat').fetchall()
+    now = datetime.now()
+    today_strf = datetime.strftime(now, '%Y-%m-%d')
+    start = today_strf + ' 00:00:00'
+    end   = today_strf + ' 23:59:59'
+    gmlist = cur.execute(
+      'select * from gstat where datetime(timestamp) between datetime(?) and datetime(?)'
+      , (start, end,)).fetchall()
+    cur.close()
+    gen_gm_lst = {}
+    for gm in gmlist:
+      if gm[:3] not in gen_gm_lst.keys():
+        if gm[4] == 'yes':
+          gen_gm_lst[gm[:3]] = (0, 'yes')
+        else:
+          gen_gm_lst[gm[:3]] = (1, 'no')
+      else:
+        if gm[4] == 'yes':
+          gen_gm_lst[gm[:3]] = (gen_gm_lst[gm[:3]][0], 'yes')
+        else:
+          gen_gm_lst[gm[:3]] = (gen_gm_lst[gm[:3]][0]+1, 'no')
+    gen_gm_info_lst = []
+    for k in gen_gm_lst:
+      gen_gm_info_lst.append(list(k)+list(gen_gm_lst[k]))
+    return template('./management_front_end/view/game_stat.tpl',
+        username=act_user.usrname, is_admin=act_user.is_admin,
+        tot_game_ops=tot_game_runnings,
+        num_of_ops=daily_running_stat[act_user.usrname],
+        gminfolist=gen_gm_info_lst, detailed_game_info=gmlist)
+  else:
+    goto_login()
+
+@route("/statistics", method='POST')
+def stat_mng():
+  print 'post stat'
+  if act_user is not None:
+    days = int(request.forms.get('period'))
+    order = request.forms.get('order')
+    print days, order
+    cur = GameStat.stat_db.cursor
+    now = datetime.now()
+    start = now - timedelta(days=days)
+    end = now
+    gmlist = cur.execute(
+      'select * from gstat where datetime(timestamp) between datetime(?) and datetime(?) order by %s'%order
+      , (start, end, )).fetchall()
     cur.close()
     gen_gm_lst = {}
     for gm in gmlist:
@@ -644,12 +717,10 @@ class Timer(threading.Thread):
     threading.Thread.__init__(self)
   def run(self):
     while True:
-      now = datetime.now()
-      if now.hour < 24 and now.minute % 5 == 0:
-        if GameStat.store_report():
-          print 'sent report'
-          return
-        time.sleep(30)
+      if GameStat.store_report():
+        print 'sent report'
+        return
+      time.sleep(3600)
 
 def main():
   # add admin as default user

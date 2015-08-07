@@ -30,7 +30,7 @@
           %end
         </p>
       </div>
-      <div id="message-bar" class="col-12"><p>总部新闻：xxxxxx</p></div>
+      <div id="message-bar" class="col-12"><p>总部新闻：暂无新闻</p></div>
     </div>
     <!--div id="message-bar" class="row"><h6>系统消息：xxxxxx</h6></div-->
     <div class="row">
@@ -49,6 +49,31 @@
         </ul>
       </div>
       <div id="game-stat" class="col-10">
+        <div id="stat-config-form" class="col-9">
+          <form id="stat-conf" name="stat-conf" action="/statistics" method="POST">
+            <p>
+              <label for="period">
+                <span>时间</span>
+                <select name="period">
+                  <option value="1">最近1天</option>
+                  <option value="7">最近7天</option>
+                  <option value="30">最近30天</option>
+                  <option value="50">最近50天</option>
+                </select>
+              </label>
+              <label for="order">
+                <span>排序方式</span>
+                <select name="order">
+                  <option value="price">价格</option>
+                  <option value="timestamp">时间</option>
+                  <option value="game">游戏</option>
+                  <option value="host">从机</option>
+                </select>
+              </label>
+              <button type="submit" form="stat-conf" name="submit" value="go">确定</button>
+            </p>
+          </form>
+        </div>
         <table class="game-stat-table">
           <tbody>
             <tr>

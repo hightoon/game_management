@@ -22,7 +22,7 @@
         </form>
       </div>
       <div id="general-info-bar" class="col-4"><p>您的店内，今日游戏运行{{tot_game_ops}}次。</p></div>
-      <div id="message-bar" class="col-12"><p>总部新闻：xxxxxx</p></div>
+      <div id="message-bar" class="col-12"><p>总部新闻：暂无新闻</p></div>
     </div>
     <div class="row">
       <div class="col-2">
@@ -50,7 +50,7 @@
               %for host in hosts:
                 <option value="{{host[0]}}" selected>{{host[0]}}</option>
               %end
-              <option value="default" selected>请选择</option>
+              <!--option value="default" selected>请选择</option-->
             </select>
           </p>
           <p>
@@ -59,7 +59,7 @@
               %for game in games:
                 <option value="{{game[0]}}" selected>{{game[0]}}</option>
               %end
-              <option value="default" selected>请选择</option>
+              <!--option value="default" selected>请选择</option-->
             </select>
           </p>
           <p>

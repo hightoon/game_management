@@ -22,7 +22,7 @@
         </form>
       </div>
       <div id="general-info-bar" class="col-4"><p>您的店内，今日游戏运行{{tot_game_ops}}次。</p></div>
-      <div id="message-bar" class="col-12"><p>总部新闻：xxxxxx</p></div>
+      <div id="message-bar" class="col-12"><p>总部新闻：暂无新闻</p></div>
     </div>
     <!--div id="message-bar" class="row"><h6>系统消息：xxxxxx</h6></div-->
     <div class="row">

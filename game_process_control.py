@@ -29,7 +29,7 @@ class Game(object):
         if self._running:
             return self._process.poll()
 
-@route('/start_game')
+@route('/start_game/')
 def start_game():
     global running_game
     game = Game("D:\\GameManagememt\\[vrword.cn]��������\\Baskhead v0.1\\Baskhead", "BaskHead")
@@ -55,24 +55,33 @@ def mc_start_game():
     enter_game_page()
     time.sleep(1)
     mc_click_start_button()
+  return 'ok'
 
 @route('/mc_start_game/<game_path>',)
 def mc_start_game(game_path):
-  print game_path
-  if game_path startswith('pos'):
+  if game_path.startswith('pos'):
     pos = int(game_path[4:])
-  if not is_on_game_page:
-    enter_game_page()
+    if not is_on_game_page:
+      enter_game_page()
+      time.sleep(0.5)
+    mc_choose_game(pos)
     time.sleep(0.5)
-  mc_choose_game(pos)
-  time.sleep(0.5)
-  mc_click_start_button()
+    mc_click_start_button()
+  elif game_path.startswith('dir'):
+    global running_game
+    game = Game(game_path[4:], "anonymous")
+    game.start()
+    if running_game:
+        running_game.stop()
+    running_game = game
+  return 'ok'
 
 @route('/mc_stop_game')
 def mc_stop_game():
   print 'stop game'
   time.sleep(0.5)
   mc_stop_game()
+  return 'ok'
 
 def get_host():
   fd = open('client_host.txt')
@@ -83,7 +92,7 @@ def get_host():
 def run_svr():
   host = get_host()
   print host
-  run(host=host, port=8081, debug=True)
+  run(host='0.0.0.0', port=8081, debug=True)
 
 def mc_click_left():
   win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN,0,0,0,0)
@@ -136,9 +145,10 @@ def mc_choose_game(position):
   else:
     win32api.SetCursorPos([resol_w, resol_h*7+offset_h])
     mc_click_left()
-    #invoke kb resp
-    win32api.keybd_event(34, 0, 0, 0)
-    win32api.keybd_event(34, 0, win32con.KEYEVENTF_KEYUP, 0)
+    #invoke kb resp by press down arrow twice
+    for i in range(2):
+      win32api.keybd_event(34, 0, 0, 0)
+      win32api.keybd_event(34, 0, win32con.KEYEVENTF_KEYUP, 0)
     for i in range(position-7):
       win32api.keybd_event(34, 0, 0, 0)
       win32api.keybd_event(34, 0, win32con.KEYEVENTF_KEYUP, 0)
@@ -175,5 +185,5 @@ def main():
 
 
 if __name__ == '__main__':
-    #run_svr()
-    main()
+    run_svr()
+    #main()

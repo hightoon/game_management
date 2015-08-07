@@ -137,6 +137,9 @@ span.company-home {
   border-top:1px solid #F00;
   /*padding: 22px !important;*/
   padding: 22px 0px 0px 22px;
+  background-image: url('/static/img/idx_bg.jpg');
+  background-repeat: repeat-x repeat-y;
+  color: white;
 }
 
 .col-11 {
@@ -146,6 +149,14 @@ span.company-home {
 .col-12 {
   width: 100%;
   text-align: center;
+}
+
+.notif-text-body {
+  margin-top: 60px;
+}
+
+.company-home {
+  margin-bottom: 1px;
 }
 
 #welcome-bar {
@@ -219,8 +230,12 @@ span.company-home {
 
 #price-form {
   text-align: left;
-  margin: 5px 50px; /* top left */
-  border-right:1px solid black;
+  margin: 2px 60px;*/ /* top left */
+  /*border-right:1px solid black;*/
+}
+
+#price-list-page {
+  margin: 2px 60px;*/ /* top left */
 }
 
 table.game-stat-table {

@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>xxx游戏管理系统</title>
+  <title>游戏管理系统</title>
   <link rel="stylesheet" type="text/css" href="/static/management_front_end/admin_mngm/css/style.css">
   <script src="/static/management_front_end/js/jQuery.js"></script>
 
@@ -30,7 +30,7 @@
           %end
         </p>
       </div>
-      <div id="message-bar" class="col-12"><p>总部新闻：xxxxxx</p></div>
+      <div id="message-bar" class="col-12"><p>总部新闻：{{news_title}}</p></div>
     </div>
     <!--div id="message-bar" class="row"><h6>系统消息：xxxxxx</h6></div-->
     <div class="row">
@@ -56,7 +56,7 @@
           <!--textarea class="notif-text-body" row="50" column="150">
             {{latest_news}}
           </textarea-->
-          <p class="cmnpy-home"><a href="#">
+          <p class="cmnpy-home"--><a href="http://www.vrword.cn/xzs/">
             <span class="company-home">>>>>>访问总部官网<<<<<</span></a>
           </p>
         %else:

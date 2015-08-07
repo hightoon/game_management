@@ -30,7 +30,7 @@
           %end
         </p>
       </div>
-      <div id="message-bar" class="col-12"><p>总部新闻：xxxxxx</p></div>
+      <div id="message-bar" class="col-12"><p>总部新闻：{{news_title}}</p></div>
     </div>
     <!--div id="message-bar" class="row"><h6>系统消息：xxxxxx</h6></div-->
     <!--div class="row"-->

@@ -272,7 +272,7 @@ def login():
 @route('/login', method='POST')
 def do_login():
   global act_user
-  print "get login post"
+  print request.get('REMOTE_ADDR'), ' connected'
   forgot = None
   username = request.forms.get('username')
   password = request.forms.get('password')
@@ -643,7 +643,8 @@ def stat_mng():
         username=act_user.usrname, is_admin=act_user.is_admin,
         tot_game_ops=tot_game_runnings,
         num_of_ops=daily_running_stat[act_user.usrname],
-        gminfolist=gen_gm_info_lst, detailed_game_info=gmlist)
+        gminfolist=gen_gm_info_lst, detailed_game_info=gmlist,
+        news_title=NewsFeed.title)
   else:
     goto_login()
 
@@ -743,7 +744,7 @@ def main():
     print "admin already existed"
 
   rprtimer = Timer()
-  rprtimer.start()
+  #rprtimer.start()
   run(host='localhost', port=8081, Debug=True, reloader=False)
   #run(host='localhost', port=80, Debug=True)
 

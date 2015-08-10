@@ -1,4 +1,4 @@
-魔法小姐妹 pos=1
+﻿魔法小姐妹 pos=1
 黑暗过山车 pos=2
 飞天360度 pos=3
 沙漠城堡过山车 pos=4
@@ -13,3 +13,11 @@
 恐怖小镇 pos=13
 水下工程观光 pos=14
 地狱木马 pos=15
+塔防游戏 dir=D:|hmgvr|TacteraPC|TacteraPCVR2_DirectToRift.exe
+超级篮球 dir=D:|hmgvr|lanqiu|Baskhead v0.1|Baskhead_DirectToRift.exe
+初音未来 dir=D:|hmgvr|chuyin|MESS_DirectToRift.exe
+星际闪躲 dir=D:|hmgvr|VanguardV|VanguardV_DirectToRift.exe
+动感单车 dir=D:|hmgvr|oc_bike|oc_bike_DirectToRift.exe
+风暴英雄 dir=D:|hmgvr|fengbao|fengbao.exe
+恐怖游戏1 dir=D:|hmgvr|kongbu1|kongbu.exe
+密室逃脱 dir=D:|hmgvr|mishi|mishi.exe

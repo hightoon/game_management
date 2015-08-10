@@ -49,7 +49,7 @@ class User:
   IS_ADMIN = 1
   NOT_ADMIN = 0
   op_db_file = 'test_op_0.db'
-  usr_db_file = 'test_user_0.db'
+  usr_db_file = 'users.db'
   user_db = GMDatabase(usr_db_file)
   op_db = GMDatabase(op_db_file)
   def __init__(self, usrname, password, is_admin=NOT_ADMIN,
@@ -277,7 +277,7 @@ def do_login():
   username = request.forms.get('username')
   password = request.forms.get('password')
   forgot = request.forms.get('forget_passwd')
-
+  print username, password
   if forgot:
     print 'sending password to %s'%(username,)
     mail_passwd_to(username)
@@ -734,9 +734,8 @@ def main():
   admin = User('admin', '000000', email='admin@mhg.org', desc=u'管理员', is_admin=User.IS_ADMIN)
   usr_db = User.user_db
   c = usr_db.cursor
-  try:
-    c.execute('SELECT * FROM users WHERE name=?', (admin.usrname,)).fetchone()
-  except:
+  res = c.execute('SELECT * FROM users WHERE name=?', (admin.usrname,)).fetchone()
+  if res is None:
     c.execute('INSERT INTO users VALUES (?, ?, ?, ?, ?, ?)',
       (admin.usrname, admin.password, admin.is_admin, admin.email, admin.nickname, admin.desc))
     usr_db.commit()

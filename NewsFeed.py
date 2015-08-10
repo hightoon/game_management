@@ -28,34 +28,40 @@ def get_desc(item):
 def get_link(item):
   return item.getElementsByTagName('link')[0].childNodes[0].nodeValue
 
-title = get_title(
-          get_items(
-            get_root(
-              fetch_xml(
-                'http://www.vrword.cn/portal.php?mod=rss&catid=11'
-              )
-            )
-          )[0]
-        )
+url_for_news = 'http://www.vrword.cn/portal.php?mod=rss&catid=11'
 
-desc = get_desc (
-          get_items(
-            get_root(
-              fetch_xml(
-                'http://www.vrword.cn/portal.php?mod=rss&catid=11'
+if 'Database Error' in urllib2.urlopen(url_for_news).read():
+  title = desc = "暂无新闻"
+  link = ''
+else:
+  title = get_title(
+            get_items(
+              get_root(
+                fetch_xml(
+                  'http://www.vrword.cn/portal.php?mod=rss&catid=11'
+                )
               )
-            )
-          )[0]
-        )
+            )[0]
+          )
 
-link = get_link (
-          get_items(
-            get_root(
-              fetch_xml(
-                'http://www.vrword.cn/portal.php?mod=rss&catid=11'
+  desc = get_desc (
+            get_items(
+              get_root(
+                fetch_xml(
+                  'http://www.vrword.cn/portal.php?mod=rss&catid=11'
+                )
               )
-            )
-          )[0]
-        )
-#for node in title.childNodes:
-#print link
+            )[0]
+          )
+
+  link = get_link (
+            get_items(
+              get_root(
+                fetch_xml(
+                  'http://www.vrword.cn/portal.php?mod=rss&catid=11'
+                )
+              )
+            )[0]
+          )
+  #for node in title.childNodes:
+  #print link

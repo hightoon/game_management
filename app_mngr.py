@@ -743,7 +743,7 @@ def main():
     print "admin already existed"
 
   rprtimer = Timer()
-  #rprtimer.start()
+  rprtimer.start()
   run(host='localhost', port=8081, Debug=True, reloader=False)
   #run(host='localhost', port=80, Debug=True)
 

@@ -51,14 +51,13 @@
 
       <div id="notif-mng" class="col-10">
         %if is_admin:
-          <h4 class="notif-header">总部最新通知</h4>
-          <p class="notif-text-body">{{latest_news}}</p>
-          <!--textarea class="notif-text-body" row="50" column="150">
+          <h1 class="notif-header">总部最新通知</h1>
+          <p class="notif-text-body">
             {{latest_news}}
-          </textarea-->
-          <p class="cmnpy-home"--><a href="http://www.vrword.cn/xzs/">
-            <span class="company-home">>>>>>访问总部官网<<<<<</span></a>
           </p>
+          <!--p class="cmnpy-home"><a href="http://www.vrword.cn/xzs/">
+            <span class="company-home">>>>>>访问总部官网<<<<<</span></a>
+          </p-->
         %else:
           <h5>消息通知</h5>
           <table class="user_msgs">

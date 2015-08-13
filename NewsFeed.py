@@ -30,38 +30,43 @@ def get_link(item):
 
 url_for_news = 'http://www.vrword.cn/portal.php?mod=rss&catid=11'
 
-if 'Database Error' in urllib2.urlopen(url_for_news).read():
+try:
+  newsfeed = urllib2.urlopen(url_for_news).read()
+except:
+  print 'official site not available'
   title = desc = "暂无新闻"
   link = ''
 else:
-  title = get_title(
-            get_items(
-              get_root(
-                fetch_xml(
-                  'http://www.vrword.cn/portal.php?mod=rss&catid=11'
+  if 'item' not in newsfeed:
+    title = desc = "暂无新闻"
+    link = ''
+  else:
+    title = get_title(
+              get_items(
+                get_root(
+                  fetch_xml(
+                    'http://www.vrword.cn/portal.php?mod=rss&catid=11'
+                  )
                 )
-              )
-            )[0]
-          )
+              )[0]
+            )
 
-  desc = get_desc (
-            get_items(
-              get_root(
-                fetch_xml(
-                  'http://www.vrword.cn/portal.php?mod=rss&catid=11'
+    desc = get_desc (
+              get_items(
+                get_root(
+                  fetch_xml(
+                    'http://www.vrword.cn/portal.php?mod=rss&catid=11'
+                  )
                 )
-              )
-            )[0]
-          )
+              )[0]
+            )
 
-  link = get_link (
-            get_items(
-              get_root(
-                fetch_xml(
-                  'http://www.vrword.cn/portal.php?mod=rss&catid=11'
+    link = get_link (
+              get_items(
+                get_root(
+                  fetch_xml(
+                    'http://www.vrword.cn/portal.php?mod=rss&catid=11'
+                  )
                 )
-              )
-            )[0]
-          )
-  #for node in title.childNodes:
-  #print link
+              )[0]
+            )

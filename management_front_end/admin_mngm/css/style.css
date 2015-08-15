@@ -1,11 +1,11 @@
 .managementpage h1 {
-  color: black;
+  color: white;
   text-align: center;
   align: center;
   text-transform: uppercase;
-  font-weight: 400;
+  font-weight: 20px;
   font-size: 24px;
-  font-family: ff-clan-web-pro-wide;
+  font-family: STFangsong;/*ff-clan-web-pro-wide;*/
 }
 
 .managementpage {
@@ -17,24 +17,6 @@
   //display: -moz-box;
   //-moz-box-wrap: wrap;
 }
-/*
-.game-ctrl-tab  {
-  width: 95%;
-  align: left;
-  padding: 20px;
-  spacing: 10px;
-  border: 1px;
-}
-
-.price-list {
-  width: 95%;
-  text-align: left;
-  margin: 5px 50px;
-  width: 95%;
-  spacing: 10px;
-  border: 1px;
-  padding: 10px 10px 10px 10px;
-}*/
 
 .adduser-section {
   font-weight: 20px;
@@ -137,7 +119,7 @@ span.company-home {
   border-top:1px solid #F00;
   /*padding: 22px !important;*/
   padding: 22px 0px 0px 22px;
-  background-image: url('/static/img/idx_bg.jpg');
+  background-image: url('/static/img/bg_img.jpg');
   background-repeat: repeat-x repeat-y;
   color: white;
 }
@@ -149,6 +131,43 @@ span.company-home {
 .col-12 {
   width: 100%;
   text-align: center;
+}
+
+.login-container {
+  background-image: url('/static/img/bg_img.jpg');
+  background-repeat: no-repeat;
+  background-color: black;
+  background-position: top;
+}
+
+.form-signin {
+  align: center;
+  text-align: center;
+}
+
+.login-user {
+  background-color: grey;
+  color: white;
+  text-align: center;
+  align: center;
+  text-transform: uppercase;
+  font-weight: 20px;
+  font-size: 40px;
+  font-family: STFangsong;
+  margin-left: 10%;
+}
+
+.fgt-passwd {
+  color: white;
+  align: right;
+  font-size: 30px;
+  font-family: STFangsong;
+  background-color: transparent;
+  border-top: 0px;
+  border-bottom: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  margin-left: 50%;
 }
 
 .notif-text-body {
@@ -238,6 +257,35 @@ span.company-home {
   margin: 2px 60px;*/ /* top left */
 }
 
+#login-form {
+  margin-top: 180px;
+  margin-left: 10px;
+  text-align: center;
+}
+
+#login-but {
+  width: 90%;
+  margin-left: 10%;
+  font-size: 40px;
+  font-family: STFangsong;
+}
+
+.notif-header {
+  margin-top: 90px;
+  font-family: STKaiti;/*Microsoft YaHei;*/
+  margin-bottom: 10px;
+  font-size: 25px;
+  color: white;
+}
+
+.notif-text-body{
+  margin-top: 20px;
+  margin-left: 22px;
+  margin-right: 22px;
+  margin-bottom: 22px;
+  font-size: 20px;
+}
+
 table.game-stat-table {
   margin-left: 10px;
   padding: 30px;
@@ -252,18 +300,9 @@ body, html {
 }
 body {
     padding-left: 1px;
+    font-size: large;
 }
 
-/*
-table {
-  margin: auto;
-  border-style: solid solid solid solid;
-  border: 2px;
-  border-color: black;
-  color: black;
-  padding: 3px;
-}
-*/
 table {
   padding: 10px;
   border-collapse: collapse;

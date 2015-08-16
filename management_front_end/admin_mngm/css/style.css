@@ -116,7 +116,7 @@ span.company-home {
 .col-10 {
   width: 83.33%;
   /*text-align: center;*/
-  border-top:1px solid #F00;
+  border-top:1px solid #FFF;
   /*padding: 22px !important;*/
   padding: 22px 0px 0px 22px;
   background-image: url('/static/img/bg_img.jpg');
@@ -331,8 +331,8 @@ span.company-home {
 
 .notif-text-body{
   margin-top: 20px;
-  margin-left: 25px;
-  margin-right: 25px;
+  margin-left: 5%;
+  margin-right: 5%;
   margin-bottom: 22px;
   font-size: 20px;
 }

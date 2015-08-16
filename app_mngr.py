@@ -267,7 +267,8 @@ def login():
     #redirect('/static/management_front_end/admin_mngm/index.html')
     redirect('/index/%s'%(act_user.usrname,))
   else:
-    redirect('/static/management_front_end/login_page.html')
+    return template('./management_front_end/view/login.tpl')
+    #redirect('/static/management_front_end/login_page.html')
 
 @route('/login', method='POST')
 def do_login():
@@ -314,7 +315,7 @@ def mail_passwd_to(usr):
     msg = msg + '您好，您的VR游戏关系系统登录密码为%s'%passwd
     server = smtplib.SMTP('smtp.vrword.cn')
     #server.set_debuglevel(1)
-    svr.login('bbs@vrword.cn', 'lovexue1314.com')
+    server.login('bbs@vrword.cn', 'lovexue1314.com')
     server.sendmail(fromaddr, toaddrs, msg)
     server.quit()
 
@@ -710,6 +711,7 @@ def create_tables():
     '(host text, game text, state text, time text, primary key (host, game))')
 
 def drop_tables():
+  User.user_db.cursor.execute('drop table users')
   GameStat.stat_db.cursor.execute('drop table gstat')
   GamePrice.gp_db.cursor.execute('drop table gameprice')
   GameState.gs_db.cursor.execute('drop table gamestate')
@@ -743,8 +745,8 @@ def main():
     print "admin already existed"
 
   rprtimer = Timer()
-  rprtimer.start()
-  run(host='localhost', port=8081, Debug=True, reloader=False)
+  #rprtimer.start()
+  run(host='0.0.0.0', port=8081, Debug=True, reloader=False)
   #run(host='localhost', port=80, Debug=True)
 
 if __name__ == '__main__':

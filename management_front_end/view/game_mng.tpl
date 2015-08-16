@@ -51,49 +51,45 @@
       <div id="game-mng" class="col-10">
         <h5 id="host-game-control">游戏控制</h5>
         <div class="row">
-          <form id="start-game-form" action="/game_control" method="POST">
-            <p>
-              <label for="host">
-                <span>空闲主机</span>
-                <select name="host">
-                  %for host in hosts:
-                    <option value="{{host[1]}}">{{host[0]}}</option>
-                  %end
-                </select>
-              </label>
-              <label for="game">
-                <span>游戏</span>
-                <select name="game">
-                  %for game in games:
-                  <option value="{{game[1]}}">{{game[0]}}</option>
-                  %end
-                </select>
-              </label>
-            </p>
-          </form>
-        </div>
-        <div class="row">
-          <!--span>控制 </span-->
-          <button type="submit" form="start-game-form" name="op" value="start">开始</button>
-        </div>
-
-        <div class="row">
-          <form id="stop-game-form" action="/game_control" method="POST">
-            <p>
-              <label for="host">
-                <span>运行中游戏</span>
-                <select name="host">
-                  %for state in game_states:
-                    <option value="{{state[0]}}:{{state[1]}}">{{state[0]}} / {{state[1]}}</option>
-                  %end
-                </select>
-              </label>
-            </p>
-          </form>
-        </div>
-        <div class="row">
-          <button type="submit" form="stop-game-form" name="op" value="stop">停止</button>
-          <button type="submit" form="stop-game-form" name="op" value="reset">重置(恢复主机状态)</button>
+          <div class="col-5" id="start-game-form">
+            <form id="start-game-form" action="/game_control" method="POST">
+              <p>
+                <label for="host">
+                  <span>空闲主机</span>
+                  <select id="start-host" name="host">
+                    %for host in hosts:
+                      <option value="{{host[1]}}">{{host[0]}}</option>
+                    %end
+                  </select>
+                </label>
+                <label for="game">
+                  <span>游戏</span>
+                  <select id="start-game" name="game">
+                    %for game in games:
+                    <option value="{{game[1]}}">{{game[0]}}</option>
+                    %end
+                  </select>
+                </label>
+              </p>
+              <button id="start-game-but" type="submit" name="op" value="start">开始</button>
+            </form>
+          </div>
+          <div class="col-5" id="stop-game-form">
+            <form id="stop-game-form" action="/game_control" method="POST">
+              <p>
+                <label for="host">
+                  <span>运行中游戏</span>
+                  <select id="running-host" name="host">
+                    %for state in game_states:
+                      <option value="{{state[0]}}:{{state[1]}}">{{state[0]}} / {{state[1]}}</option>
+                    %end
+                  </select>
+                </label>
+              </p>
+              <button id="stop-game-but" type="submit" name="op" value="stop">停止</button>
+              <button id="reset-game-but" type="submit" name="op" value="reset">重置(恢复主机状态)</button>
+            </form>
+          </div>
         </div>
 
         <h5 id="host-game-kb-ctrl">游戏控制(键盘)</h5>

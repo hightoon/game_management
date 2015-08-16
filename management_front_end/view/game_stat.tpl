@@ -54,7 +54,7 @@
             <p>
               <label for="period">
                 <span>时间</span>
-                <select name="period">
+                <select id="game-stat-period" name="period">
                   <option value="1">最近1天</option>
                   <option value="7">最近7天</option>
                   <option value="30">最近30天</option>
@@ -63,14 +63,14 @@
               </label>
               <label for="order">
                 <span>排序方式</span>
-                <select name="order">
+                <select id="game-stat-ord" name="order">
                   <option value="price">价格</option>
                   <option value="timestamp">时间</option>
                   <option value="game">游戏</option>
                   <option value="host">从机</option>
                 </select>
               </label>
-              <button type="submit" form="stat-conf" name="submit" value="go">确定</button>
+              <button id="game-stat-but" type="submit" form="stat-conf" name="submit" value="go">确定</button>
             </p>
           </form>
         </div>

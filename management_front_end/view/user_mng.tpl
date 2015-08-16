@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>游戏管理系统</title>
   <link rel="stylesheet" type="text/css" href="/static/management_front_end/admin_mngm/css/style.css">
+  <!--link rel="stylesheet" type="text/css" href="/static/management_front_end/bsfiles/css/bootstrap.css"-->
   <script src="/static/management_front_end/js/jQuery.js"></script>
 
   <!-- More on helper.js in the class -->
@@ -39,59 +40,71 @@
         </ul>
       </div>
       <div id="user-mng" class="col-10">
-        <h4 id="add-new-user">添加用户</h4>
-        <form action="/add_user" method="POST">
-          <p><strong><abbr title="required">*</abbr></strong>为必填项。</p>
-          <p>
-            <label for="username">
-              <span>用户名: </span>
-              <input type="text" id="uname" name="username" required />
-              <strong><abbr title="required">*</abbr></strong>
-            </label>
-          </p>
-          <p>
-            <label for="password">
-              <span>密码: </span>
-              <input type="password" id="pass" name="password" required />
-              <strong><abbr title="required">*</abbr></strong>
-            </label>
-          </p>
-          <p>
-            <label for="email">
-              <span>邮箱: </span>
-              <input type="email" id="email" name="useremail" required />
-              <strong><abbr title="required">*</abbr></strong>
-            </label>
-          </p>
-          <p>
-            <label for="name">
-              <span>姓名: </span>
-              <input type="text" id="name" name="name" />
-              <strong><abbr title="required">*</abbr></strong>
-            </label>
-          </p>
-          <p>
-            <label for="sex">
-              <span>性别:</span>
-                <input type="radio" id="male" name="sex" value="male">
-                <label for="male">男</label>
-                <input type="radio" id="female" name="sex" value="female">
-                <label for="female">女</label>
-            </label>
-          </p>
-          <input type="submit" value="添加" />
-        </form>
-        <h4 id="delete-user">删除用户</h4>
-        <form action="delete_user" method="POST">
-          <p>
-            <label for="username">
-              <span>用户名: </span>
-              <input type="text" id="uname" name="username" required />
-              <strong><abbr title="required">*</abbr></strong>
-            </label>
-          </p>
-          <input type="submit" value="删除" />
-        </form>
+        <div class="row" id="user-add-del-page">
+          <div class="col-5" id="user-add-form">
+            <h4 id="add-new-user">添加用户</h4>
+            <form action="/add_user" method="POST">
+              <!--p><strong><abbr title="required">*</abbr></strong>为必填项。</p-->
+              <p>
+                <label for="username">
+                  <span>账号  : </span>
+                  <input type="text" id="uname" name="username" required />
+                  <strong><abbr title="required">*</abbr></strong>
+                </label>
+              </p>
+              <p>
+                <label for="password">
+                  <span>密码  : </span>
+                  <input type="password" id="pass" name="password" required />
+                  <strong><abbr title="required">*</abbr></strong>
+                </label>
+              </p>
+              <p>
+                <label for="email">
+                  <span>邮箱  : </span>
+                  <input type="email" id="email" name="useremail" required />
+                  <strong><abbr title="required">*</abbr></strong>
+                </label>
+              </p>
+              <p>
+                <label for="name">
+                  <span>姓名  : </span>
+                  <input type="text" id="name" name="name" />
+                  <strong><abbr title="required">*</abbr></strong>
+                </label>
+              </p>
+              <p>
+                <label for="sex">
+                  <span>性别  :</span>
+                    <input type="radio" id="male" name="sex" value="male">
+                    <label for="male">男</label>
+                    <input type="radio" id="female" name="sex" value="female">
+                    <label for="female">女</label>
+                </label>
+              </p>
+              <!--input type="submit" value="添加" /-->
+              <button class="btn btn-lg btn-default btn-block" id="add-user-but" type="submit">
+                添加
+              </button>
+            </form>
+          </div>
+          <div class="col-5" id="user-del-form">
+            <h4 id="delete-user">删除用户</h4>
+            <form action="delete_user" method="POST">
+              <p>
+                <label for="username">
+                  <span>账号  : </span>
+                  <input type="text" id="uname" name="username" required />
+                  <strong><abbr title="required">*</abbr></strong>
+                </label>
+              </p>
+              <!--input type="submit" value="删除" /-->
+              <button class="btn btn-lg btn-default btn-block" id="del-user-but" type="submit">
+                删除
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>

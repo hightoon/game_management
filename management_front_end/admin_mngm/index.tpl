@@ -49,18 +49,20 @@
         </ul>
       </div>
       <div class="col-10">
-        <p>
-          截至止{{nowtime}}, 今日：<br/>
-          %if is_admin:
-            <ul>
-              %for ui in usrinfo:
-                <li>{{ui[0]}}运行游戏{{ui[1]}}次，登录时间{{ui[2]}}！</li>
-              %end
-            </ul>
-          %else:
-            <ul><li>您已经运行游戏{{num_of_ops}}次。</li></ul>
-          %end
-        </p>
+        <div class="user-welcome-page">
+          <p>
+            截至止{{nowtime}}, 今日：<br/>
+            %if is_admin:
+              <ul>
+                %for ui in usrinfo:
+                  <li>{{ui[0]}}运行游戏{{ui[1]}}次，登录时间{{ui[2]}}！</li>
+                %end
+              </ul>
+            %else:
+              <ul><li>您已经运行游戏{{num_of_ops}}次。</li></ul>
+            %end
+          </p>
+        </div>
       </div>
     <!--/div-->
   </div>

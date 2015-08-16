@@ -40,7 +40,7 @@
       <div class="col-10">
         <div id="price-form" class="col-5">
           <h4>价格修改</h4>
-          <form action="/change_price" method="post">
+          <form class="price-change-form" action="/change_price" method="post">
             <p>
               <label for="shop-name">店名 </label>
               <input id="shop-name" type="text" name="shopname" placeholder="可不填">
@@ -53,8 +53,8 @@
                 %end
                 <!--option value="default" selected>请选择</option-->
               </select>
-            </p>
-            <p>
+            <!--/p>
+            <p-->
               <label for="game-name">游戏 </label>
               <select id="game-name" name="gamename">
                 %for game in games:
@@ -66,16 +66,20 @@
             <p>
               <label for="timing">时间 </label>
               <input id="timing" type="text" name="gametiming" placeholder="例如: 13:00-15:00">
-            </p>
-            <p>
+            <!--/p>
+            <p-->
               <label for="price-range">价格 </label>
               <input id="price-range" type="text" name="price" placeholder="最低20">
             </p>
-            <input type="submit" value="修改">
+            <!--input type="submit" value="确定"-->
+            <button class="btn btn-lg btn-default btn-block" id="change-price-but" type="submit">
+              确定
+            </button>
           </form>
         </div>
+        <br/>
         <div id="price-list-page" class="col-8">
-          <h4>价格列表</h4>
+          <!--h4>价格列表</h4-->
           <table class="price-list">
             <tr>
               <th>主机</th>

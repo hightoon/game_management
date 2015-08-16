@@ -178,6 +178,17 @@ span.company-home {
   margin-bottom: 1px;
 }
 
+.price-change-form {
+  font-family: STFangsong;
+}
+
+.user-welcome-page {
+  margin-top: 10%;
+  margin-left: 5%;
+  font-family: STFangsong;
+  font-size: 20px;
+}
+
 #welcome-bar {
   text-align: center;
   background-color: #2B547E;
@@ -237,6 +248,17 @@ span.company-home {
   margin: 5px 20px;
 }
 
+#user-add-del-page {
+  margin-top: 10%;
+  font-family: STFangsong;
+  font-size: 24px;
+}
+
+#user-add-form, #user-del-form {
+  margin-left: 15px;
+  align: middle;
+}
+
 #host-game-control {
   font-size: medium;
   text-align: left;
@@ -249,12 +271,13 @@ span.company-home {
 
 #price-form {
   text-align: left;
-  margin: 2px 60px;*/ /* top left */
+  margin-top: 10%;
+  margin-left: 50px;
   /*border-right:1px solid black;*/
 }
 
 #price-list-page {
-  margin: 2px 60px;*/ /* top left */
+  margin: 0px 50px;*/ /* top left */
 }
 
 #login-form {
@@ -268,6 +291,34 @@ span.company-home {
   margin-left: 10%;
   font-size: 40px;
   font-family: STFangsong;
+}
+
+#add-user-but, #del-user-but, #change-price-but, #start-game-but, #stop-game-but,
+#reset-game-but, #game-stat-but {
+  font-size: 20px;
+  font-family: STFangsong;
+  color: white;
+  background-color: gray;
+}
+
+#host-name, #game-name, #start-host,  #running-host, #game-stat-period, #game-stat-ord {
+  font-size: 15px;
+  font-family: STFangsong;
+  color: white;
+  background-color: gray;
+  width: 150px;
+}
+
+#start-game {
+  font-size: 15px;
+  font-family: STFangsong;
+  color: white;
+  background-color: gray;
+  width: 120px;
+}
+
+#host-game-control, #stat-config-form{
+  margin-top: 10%;
 }
 
 .notif-header {
@@ -314,11 +365,14 @@ table {
 th {
   border: 2px solid;
   padding: 15px;
+  font-family: STFangsong;
 }
 
-td {
+td, tr {
   border: 2px solid;
-  padding: 15px;
+  padding: 20px;
+  font-family: STFangsong;
+  font-size: large;
 }
 
 #logout-change-password button {

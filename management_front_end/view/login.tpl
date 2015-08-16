@@ -16,7 +16,7 @@
       <div class="col-4"></div>
       <div class="col-4" id="login-form">
         <form class="form-signin" action="/login" method="POST">
-          <input type="text" name="username" class="login-user" placeholder="用户名" required autofocus>
+          <input type="text" name="username" class="login-user" placeholder="账号" required autofocus>
           <br/><br/><br/>
           <input type="password" name="password" class="login-user" placeholder="密码">
           <br/><br/><br/>

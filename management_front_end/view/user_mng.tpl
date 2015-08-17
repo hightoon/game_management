@@ -40,6 +40,7 @@
         </ul>
       </div>
       <div id="user-mng" class="col-10">
+        <div class="container">
         <div class="row" id="user-add-del-page">
           <div class="col-5" id="user-add-form">
             <h4 id="add-new-user">添加用户</h4>
@@ -105,6 +106,7 @@
             </form>
           </div>
         </div>
+      </div>
       </div>
     </div>
   </div>

@@ -49,6 +49,7 @@
         </ul>
       </div>
       <div id="game-stat" class="col-10">
+        <div class="container">
         <div id="stat-config-form" class="col-9">
           <form id="stat-conf" name="stat-conf" action="/statistics" method="POST">
             <p>
@@ -122,6 +123,7 @@
           </tbody>
         </table>
       </div>
+    </div>
     </div>
   </div>
   <script src="/static/management_front_end/js/eventhandler.js"></script>

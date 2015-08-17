@@ -114,19 +114,18 @@ span.company-home {
 }
 
 .col-10 {
-  width: 100%;
+  width: 83.33%;
   /*text-align: center;*/
   border-top:1px solid #FFF;
   /*padding: 22px !important;*/
   /*padding: 22px 0px 0px 22px;*/
-  padding-left: 4%;
-  padding-right: 4%;
+  /*padding-left: 4%;
+  padding-right: 4%;*/
   background-image: url('/static/img/bg_img.jpg');
   background-repeat: repeat-x repeat-y;
   background-position: center;
   background-size: 100% 100%;
   color: white;
-  height: 100%;
 }
 
 .col-11 {
@@ -157,7 +156,7 @@ span.company-home {
   color: white;
   text-align: center;
   align: center;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
   font-weight: 20px;
   font-size: 40px;
   font-family: STFangsong;
@@ -294,8 +293,8 @@ span.company-home {
 }
 
 #login-but {
-  width: 90%;
-  margin-left: 10%;
+  width: 85%;
+  margin-left: 13%;
   font-size: 40px;
   font-family: STFangsong;
 }
@@ -326,6 +325,10 @@ span.company-home {
 
 #host-game-control, #stat-config-form{
   margin-top: 12%;
+}
+
+.container {
+  margin-left: 5%;
 }
 
 .notif-header {

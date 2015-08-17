@@ -49,6 +49,7 @@
         </ul>
       </div>
       <div id="game-mng" class="col-10">
+        <div class="container">
         <h5 id="host-game-control">游戏控制</h5>
         <div class="row">
           <div class="col-5" id="start-game-form">
@@ -118,6 +119,7 @@
           </table>
           </div>
         </div>
+      </div>
       </div>
     </div>
   </div>

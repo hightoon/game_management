@@ -68,7 +68,7 @@ span.company-home {
   flex-wrap: wrap;
   display: -webkit-flex; /* Safari */
   -webkit-flex-wrap: wrap; /* Safari 6.1+ */
-  /*-moz-box-wrap: wrap;*/
+  -moz-box-wrap: wrap;
 }
 
 .col-1 {
@@ -114,14 +114,19 @@ span.company-home {
 }
 
 .col-10 {
-  width: 83.33%;
+  width: 100%;
   /*text-align: center;*/
   border-top:1px solid #FFF;
   /*padding: 22px !important;*/
-  padding: 22px 0px 0px 22px;
+  /*padding: 22px 0px 0px 22px;*/
+  padding-left: 4%;
+  padding-right: 4%;
   background-image: url('/static/img/bg_img.jpg');
   background-repeat: repeat-x repeat-y;
+  background-position: center;
+  background-size: 100% 100%;
   color: white;
+  height: 100%;
 }
 
 .col-11 {
@@ -138,6 +143,8 @@ span.company-home {
   background-repeat: no-repeat;
   background-color: black;
   background-position: top;
+  background-size: 100% 100%;
+  height: 100%;
 }
 
 .form-signin {
@@ -183,7 +190,7 @@ span.company-home {
 }
 
 .user-welcome-page {
-  margin-top: 10%;
+  margin-top: 12%;
   margin-left: 5%;
   font-family: STFangsong;
   font-size: 20px;
@@ -249,7 +256,7 @@ span.company-home {
 }
 
 #user-add-del-page {
-  margin-top: 10%;
+  margin-top: 12%;
   font-family: STFangsong;
   font-size: 24px;
 }
@@ -271,7 +278,7 @@ span.company-home {
 
 #price-form {
   text-align: left;
-  margin-top: 10%;
+  margin-top: 12%;
   margin-left: 50px;
   /*border-right:1px solid black;*/
 }
@@ -318,11 +325,11 @@ span.company-home {
 }
 
 #host-game-control, #stat-config-form{
-  margin-top: 10%;
+  margin-top: 12%;
 }
 
 .notif-header {
-  margin-top: 90px;
+  margin-top: 12%;
   font-family: STKaiti;/*Microsoft YaHei;*/
   margin-bottom: 10px;
   font-size: 25px;
@@ -348,10 +355,14 @@ table.detail-game-stat {
 
 body, html {
     height: 100%;
+    min-height: 100%;
+    background-color: black;
 }
 body {
     padding-left: 1px;
     font-size: large;
+    margin: 0px;
+    min-height: 100%;
 }
 
 table {

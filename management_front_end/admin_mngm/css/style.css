@@ -78,8 +78,9 @@ span.company-home {
 .col-2 {
   width: 16.66%;
   text-align: left;
-  border-right:1px solid blue;
-  background-color: #00ffff;
+  border-right: 1px solid white;
+  border-top: 1px solid white;
+  background-color: transparent; /*#rgba(0, 0, 0, 0.5);*/
   color: white;
   padding: 22px;
 }
